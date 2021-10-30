@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
+const path = require('path')
 const usersController = require('./controllers/users')
 const listingsController = require('./controllers/listings')
 const ordersController = require('./controllers/orders')
