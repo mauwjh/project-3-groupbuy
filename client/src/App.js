@@ -4,23 +4,22 @@ import ListingNew from "./Components/ListingNew";
 import NaviBar from "./Components/Navibar";
 import About from "./Components/About";
 import Login from "./Components/Login";
-
-
+import Home from "./Components/Home";
 
 function App() {
   return (
     <div className="App">
-        <Switch>
-        <Route exact path="/" component={Login} />
-       <Route path='/listing/new'>
-        <ListingNew />
-        </Route>
+      <Switch>
         <Route exact path="/listing/Login" component={Login}></Route>
-          <div>
-            <NaviBar />
-            <Route exact path="/listing/about" component={About}></Route>
-          </div>
-        </Switch>
+        <div>
+          <NaviBar />
+          <Route exact path="/" component={Home} />
+          <Route path="/listing/new">
+            <ListingNew />
+          </Route>
+          <Route exact path="/listing/about" component={About}></Route>
+        </div>
+      </Switch>
     </div>
   );
 }
