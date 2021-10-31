@@ -39,7 +39,7 @@ export default function Home() {
         <Box
           sx={{
             bgcolor: "background.paper",
-            pt: 8,
+            pt: 3,
             pb: 1,
           }}
         >
