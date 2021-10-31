@@ -27,6 +27,8 @@ export default function NaviBar() {
             News
           </Typography>
           <Button   component={RouterLink}
+              to="/listing/Login" color="inherit">Login</Button>
+          <Button   component={RouterLink}
               to="/listing/about" color="inherit">About</Button>
         </Toolbar>
       </AppBar>

@@ -16,11 +16,11 @@ mongoose.connection.once('open', () => {
 
 
 // * Middleware
-app.use(express.static(path.join(__dirname, "./client/build")))
-app.use(express.json({extended: true}))
-app.use('./api/users', usersController)
-app.use('./api/listings', listingsController)
-app.use('./api/orders', ordersController)
+// app.use(express.static(path.join(__dirname, "./client/build")))
+// app.use(express.json({extended: true}))
+// app.use('./api/users', usersController)
+// app.use('./api/listings', listingsController)
+// app.use('./api/orders', ordersController)
 
 
 // * Routes
