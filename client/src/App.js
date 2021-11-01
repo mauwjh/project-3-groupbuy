@@ -7,6 +7,7 @@ import Login from "./Components/Login";
 import Home from "./Components/Home";
 import Listing from "./Components/Listing";
 import Order from "./Components/Order";
+import SignUp from "./Components/SignUp";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Switch>
         <Route exact path="/login" component={Login}></Route>
         <Route exact path="/" component={Home} />
+        <Route exact path="/signUp" component={SignUp} />
         <Route path="/listing/new">
           <ListingNew />
         </Route>
@@ -31,19 +33,4 @@ function App() {
 }
 export default App;
 
-// <>
-// <div className="App">
-//     <Switch>
-//     <NaviBar/>
-//     <Route path='/listing/new'>
-//         <ListingNew />
-//       </Route>
-//       <Route path='/listing/Login'>
-//       <Login/>
-//       </Route>
-//       <Route path='/listing/about'>
-//       <About />
-//     </Route>
-//   </Switch>
-// </div>
-// </>
+
