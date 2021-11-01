@@ -12,6 +12,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useEffect, useState } from "react";
+
+const URL = "/api/listings";
 
 function Copyright() {
   return (
@@ -31,6 +34,20 @@ const cards = [1, 2, 3, 4, 5, 6];
 const theme = createTheme();
 
 export default function Home() {
+  const [alllistings,setAllListings] = useState([])
+
+  useEffect(()=>{
+    const fetchData = async () =>{
+    const res = await fetch(URL);
+    console.log(res)
+    const data = await res.json();
+    console.log("hello")
+    console.log(data)
+    setAllListings(data)
+    };
+    fetchData();
+  },[])
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -68,8 +85,8 @@ export default function Home() {
         <Container sx={{ py: 2 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+            {alllistings.map((listings) => (
+              <Grid item key={listings.index} xs={12} sm={6} md={4}>
                 <Card
                   sx={{
                     height: "100%",
@@ -88,15 +105,14 @@ export default function Home() {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      {listings.name}
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe
-                      the content.
+                      {listings.description}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small">View</Button>
+                    <Button size="small"><a href={"/listing/" + listings._id}>View</a></Button>
                     <Button size="small">Edit</Button>
                   </CardActions>
                 </Card>
