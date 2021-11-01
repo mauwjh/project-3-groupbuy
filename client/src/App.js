@@ -11,6 +11,7 @@ import ListingEdit from "./Components/ListingEdit";
 import User from "./Components/User";
 import SignUp from "./Components/SignUp";
 import SignUpBuyer from "./Components/SignUpBuyer";
+import SignUpSeller from "./Components/SignUpSeller";
   
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/signup/buyer" component={SignUpBuyer} />
+        <Route exact path="/signup/seller" component={SignUpSeller} />
         <Route path="/listing/new">
           <ListingNew />
         </Route>
