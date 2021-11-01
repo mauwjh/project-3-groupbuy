@@ -12,22 +12,20 @@ import Order from './Components/Order';
 function App() {
   return (
     <div className="App">
+      <NaviBar />
       <Switch>
-        <Route exact path="/listing/Login" component={Login}></Route>
-        <div>
-          <NaviBar />
-          <Route exact path="/" component={Home} />
-          <Route path="/listing/new">
-            <ListingNew />
-          </Route>
-          <Route exact path="/listing/about" component={About}></Route>
+      <Route exact path="/" > <Home/> </Route>
+        <Route path="/login" ><Login/></Route>
         <Route path='/listing/:id'>
-          <Listing />
+        <Listing />
         </Route>
+        <Route path="/about" ><About/></Route>
+        <Route path="/listing/new">
+        <ListingNew />
+          </Route>
         <Route path='/order/:id'>
           <Order />
         </Route>
-        </div>
       </Switch>
     </div>
   );
