@@ -64,10 +64,10 @@ export default function SignUp() {
               Please select if you are a buyer or a seller
             </Typography>
             <Stack spacing={2} sx= {{my:2}}>
-           <Button component= { Link} href= "Signup/Buyer" color="inherit" variant="outlined">
+           <Button component= { Link} href= "signup/buyer" color="inherit" variant="outlined">
             Buyer
               </Button>
-              <Button component= { Link} href= "Signup/Seller" color="inherit" variant="outlined">
+              <Button component= { Link} href= "signup/seller" color="inherit" variant="outlined">
             Seller
           </Button> 
             </Stack>
