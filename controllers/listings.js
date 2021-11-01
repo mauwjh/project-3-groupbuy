@@ -27,7 +27,8 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req,res)=>{
     const { id } = req.params;
     const listing = await Listing.findById(id);
-    res.json(listing)
+    const order = await Order.find({}).populate('buyer_id').populate('listing_id')
+    res.json({listing,order})
 })
 
 //Listing "listing/:id" ---> Display Specific Listing for Seller
@@ -121,10 +122,10 @@ router.post("/new", async (req,res)=>{
 // await cookie.save();
 // });
 
-router.get("/seed", async (req, res) => {
-    const listing = await Listing.find({}).populate('seller_id')
-    res.send(listing)
-    })
+// router.get("/seed", async (req, res) => {
+//     const listing = await Listing.findby({}).populate('seller_id')
+//     res.send(listing)
+//     })
 
 
 

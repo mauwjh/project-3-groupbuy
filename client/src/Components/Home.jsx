@@ -85,8 +85,8 @@ export default function Home() {
         <Container sx={{ py: 2 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {alllistings.map((listings) => (
-              <Grid item key={listings.index} xs={12} sm={6} md={4}>
+            {alllistings.map((listings,key) => (
+              <Grid item key={key} xs={12} sm={6} md={4}>
                 <Card
                   sx={{
                     height: "100%",
@@ -100,7 +100,7 @@ export default function Home() {
                       // 16:9
                       //pt: "10%",
                     }}
-                    image="https://source.unsplash.com/random"
+                    image={listings.img}
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
