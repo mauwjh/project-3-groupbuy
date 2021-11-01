@@ -18,7 +18,7 @@ const ListingNew = () => {
   const [maxQty, setMaxQty] = useState()
 
   return (
-    <div style={{ width: "80%", maxWidth: "800px", margin: "0 auto" }} onSubmit={(event) => {event.preventDefault(); console.log(name)}}>
+    <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }} onSubmit={(event) => {event.preventDefault(); console.log(name)}}>
       <h1>Create Listing</h1>
       <form>
         <TextField
