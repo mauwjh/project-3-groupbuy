@@ -27,6 +27,11 @@ const Listing = () => {
     fetchListing(id);
   }, [id]);
 
+  // const buyers = 0;
+  // for (let i=0;i<data.data.order.length;i++) {
+  //   if data.data.order[i]._id = id
+  // }
+
   // useEffect(() => {
   //   setData(seedData);
   //   setOrders(seedOrders);
@@ -40,14 +45,14 @@ const Listing = () => {
   // }, [data, orders]);
 
   const timeRemaining = differenceInDays(
-    new Date(seedData[0].closing_date),
+    new Date(data?.listing?.closing_date),
     new Date()
   );
 
   return (
     <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}>
-      <h1>{data[0]?.name}</h1>
-      <h4>{data.description}</h4>
+      <h1>{data?.listing?.name}</h1>
+      <h4>{data?.listing?.description}</h4>
       <div
         className="details-container"
         style={{ display: "flex", flexFlow: "row wrap" }}
@@ -64,7 +69,7 @@ const Listing = () => {
           }}
         >
           <img
-            src={data[0]?.img}
+            src={data?.listing?.img}
             style={{ minHeight: "100%", minWidth: "100% " }}
             alt="transparent"
           />
@@ -91,7 +96,7 @@ const Listing = () => {
             {numOfOrders}
           </p>
           <p style={{ marginTop: "-35px" }}>
-            units reserved out of a target of {data[0]?.max_quantity} units
+            units reserved out of a target of {data?.listing?.max_quantity} units
           </p>
           <p style={{ fontSize: "36px", fontWeight: "bold" }}>
             {orders?.length}
@@ -104,7 +109,7 @@ const Listing = () => {
           </p>
           <p style={{ marginTop: "-35px", marginBottom: '65px' }}>days remaining</p>
           <Link
-            to={`/order/${useParams().id}`}
+            to={`/order/`}
             style={{
               textDecoration: "none",
               width: '100%'
