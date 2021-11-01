@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -77,6 +75,9 @@ export default function SignUpBuyer() {
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <SetMeal />
             </Avatar>
+            <Typography  variant="h5">
+            Buyer  
+            </Typography>
             <Box
               component="form"
               noValidate
@@ -111,6 +112,17 @@ export default function SignUpBuyer() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+              />
+              <TextField
+                margin="normal"
+                id="payment_details"
+                type="number"
+                name="payment_details"
+                label="Credit Card Details"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
               />
               <Button
                 type="submit"
