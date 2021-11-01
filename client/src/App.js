@@ -10,7 +10,8 @@ import Order from "./Components/Order";
 import ListingEdit from "./Components/ListingEdit";
 import User from "./Components/User";
 import SignUp from "./Components/SignUp";
-
+import SignUpBuyer from "./Components/SignUpBuyer";
+  
 function App() {
   return (
     <div className="App">
@@ -18,7 +19,8 @@ function App() {
       <Switch>
         <Route exact path="/login" component={Login}></Route>
         <Route exact path="/" component={Home} />
-        <Route exact path="/signUp" component={SignUp} />
+        <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/signup/buyer" component={SignUpBuyer} />
         <Route path="/listing/new">
           <ListingNew />
         </Route>
