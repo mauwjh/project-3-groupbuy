@@ -41,10 +41,10 @@ export default function NaviBar() {
           <Button component={RouterLink} to="/listing/new" color="inherit">
             New
           </Button>
-          <Button component={RouterLink} to="/listing/about" color="inherit">
+          <Button component={RouterLink} to="/about" color="inherit">
             About
           </Button>
-          <Button component={RouterLink} to="/listing/login" color="inherit">
+          <Button component={RouterLink} to="/login" color="inherit">
             Login
           </Button>
         </Toolbar>
