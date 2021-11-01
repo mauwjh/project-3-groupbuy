@@ -7,6 +7,8 @@ import Login from "./Components/Login";
 import Home from "./Components/Home";
 import Listing from "./Components/Listing";
 import Order from "./Components/Order";
+import ListingEdit from "./Components/ListingEdit";
+import User from "./Components/User";
 
 function App() {
   return (
@@ -19,11 +21,17 @@ function App() {
           <ListingNew />
         </Route>
         <Route exact path="/about" component={About}></Route>
+        <Route path="/listing/:id/edit">
+          <ListingEdit />
+        </Route>
         <Route path="/listing/:id">
           <Listing />
         </Route>
         <Route path="/order/:id">
           <Order />
+        </Route>
+        <Route path="/user/:id">
+          <User />
         </Route>
       </Switch>
     </div>
