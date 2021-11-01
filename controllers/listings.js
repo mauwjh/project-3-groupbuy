@@ -33,22 +33,22 @@ router.get("/:id", async (req,res)=>{
 //Listing "listing/:id" ---> Display Specific Listing for Seller
 //!Seller sees all the orders?
 
-router.get("/:id", async (req,res)=>{
-    const { id } = req.params;
-    const listing = await Listing.findById(id);
-    const order = await Order.find({ "listing_id._id": id })
-    res.json({listing, order})
-})
+// router.get("/:id", async (req,res)=>{
+//     const { id } = req.params;
+//     const listing = await Listing.findById(id);
+//     const order = await Order.find({ "listing_id._id": id })
+//     res.json({listing, order})
+// })
 
 //Listing "listing/:id" ---> Display Specific Listing for Buyer
 //!Buyer see existing order?
 
-router.get("/:id", async (req,res)=>{
-    const { id } = req.params;
-    const listing = await Listing.findById(id);
-    const order = await Order.find({ "listing_id._id": id })
-    res.json({listing, order})
-})
+// router.get("/:id", async (req,res)=>{
+//     const { id } = req.params;
+//     const listing = await Listing.findById(id);
+//     const order = await Order.find({ "listing_id._id": id })
+//     res.json({listing, order})
+// })
 
 //Listing "listing/new" ---> Create New Listing
 //!How do I get the seller_id from listing/new? 
