@@ -6,23 +6,38 @@ import ProgressBar from "./ProgressBar";
 import { Grid } from "@mui/material";
 import { differenceInDays } from "date-fns";
 import { Button } from "@mui/material";
+import axios from "axios";
 
 const Listing = () => {
   const [data, setData] = useState([]);
   const [orders, setOrders] = useState([]);
   const [numOfOrders, setNumOfOrders] = useState(0);
 
+  const { id } = useParams();
+  console.log("HELLO ID", id )
+
   useEffect(() => {
-    setData(seedData);
-    setOrders(seedOrders);
-    setNumOfOrders(
-      Math?.round(
-        (orders?.map((a) => a?.qty_reserved)?.reduce((a, b) => a + b, 0) /
-          parseInt(data[0]?.max_quantity)) *
-          100
-      )
-    );
-  }, [data, orders]);
+    const fetchListing = async (id) => {
+      console.log("id",id)
+      const url = `/api/listings/${id}`;
+      const data = await axios.get(url);
+      console.log("DD",data.data)
+      setData(data.data);
+    };
+    fetchListing(id);
+  }, [id]);
+
+  // useEffect(() => {
+  //   setData(seedData);
+  //   setOrders(seedOrders);
+  //   setNumOfOrders(
+  //     Math?.round(
+  //       (orders?.map((a) => a?.qty_reserved)?.reduce((a, b) => a + b, 0) /
+  //         parseInt(data[0]?.max_quantity)) *
+  //         100
+  //     )
+  //   );
+  // }, [data, orders]);
 
   const timeRemaining = differenceInDays(
     new Date(seedData[0].closing_date),
@@ -32,7 +47,7 @@ const Listing = () => {
   return (
     <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}>
       <h1>{data[0]?.name}</h1>
-      <h4>{data[0]?.description}</h4>
+      <h4>{data.description}</h4>
       <div
         className="details-container"
         style={{ display: "flex", flexFlow: "row wrap" }}
