@@ -42,7 +42,7 @@ export default function NaviBar() {
             New
           </Button>
           <Button component={RouterLink} to="/about" color="inherit">
-           About
+            About
           </Button>
           <Button component={RouterLink} to="/login" color="inherit">
             Login
