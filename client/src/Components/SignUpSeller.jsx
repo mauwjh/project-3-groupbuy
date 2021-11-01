@@ -11,23 +11,6 @@ import SetMeal from "@mui/icons-material/SetMeal";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
@@ -36,9 +19,14 @@ export default function SignUpSeller() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
+    //data
     console.log({
+      username: data.get("username"),
       email: data.get("email"),
       password: data.get("password"),
+      business_name: data.get("business_name"),
+      website: data.get("website"),
+      contact_number: data.get("contact_number"),
     });
   };
 
@@ -72,18 +60,45 @@ export default function SignUpSeller() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <SetMeal />
-            </Avatar>
-            <Typography  variant="h5">
-            Seller 
-            </Typography>
+            <div style={{ width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  p: 1,
+                  m: 1,
+                  bgcolor: "background.paper",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                  <SetMeal />
+                </Avatar>
+                <Typography variant="h4" component="div" sx={{ pl: 1 }}>
+                  Seller
+                </Typography>
+              </Box>
+            </div>
+
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
+              <div style={{ width: "100%" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    p: 1,
+                    m: 1,
+                    bgcolor: "background.paper",
+                    justifyContent: "center",
+                  }}
+                >
+                  <b> Personal Details </b>
+                </Box>
+              </div>
               <TextField
                 margin="normal"
                 required
@@ -113,16 +128,45 @@ export default function SignUpSeller() {
                 id="password"
                 autoComplete="current-password"
               />
+              <div style={{ width: "100%" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    p: 1,
+                    m: 1,
+                    bgcolor: "background.paper",
+                    justifyContent: "center",
+                  }}
+                >
+                  <b> Business Details </b>
+                </Box>
+              </div>
               <TextField
                 margin="normal"
-                id="payment_details"
-                type="number"
-                name="payment_details"
-                label="Credit Card Details"
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                required
                 fullWidth
+                id="businessName"
+                label="Business Name"
+                name="business_name"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="website"
+                label="Business Website"
+                name="website"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="contact_number"
+                label="Contact Number"
+                name="contact_number"
+                autoFocus
               />
               <Button
                 type="submit"

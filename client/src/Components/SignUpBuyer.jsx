@@ -11,23 +11,6 @@ import SetMeal from "@mui/icons-material/SetMeal";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
@@ -37,8 +20,10 @@ export default function SignUpBuyer() {
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
+      username: data.get("username"),
       email: data.get("email"),
       password: data.get("password"),
+      payment_details: data.get("payment_details"),
     });
   };
 
@@ -72,18 +57,27 @@ export default function SignUpBuyer() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+             <div style={{ width: "100%" }}>
+              <Box sx={{ display: 'flex', p: 1, m: 1, bgcolor: 'background.paper', alignItems: 'center',  justifyContent: 'center'}}>
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <SetMeal />
             </Avatar>
-            <Typography  variant="h5">
-            Buyer  
-            </Typography>
+                <Typography variant="h4" component="div" sx={{ pl: 1 }} >
+               Buyer
+              </Typography>
+            </Box>
+              </div>
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
+              <div style={{ width: "100%" }}>
+              <Box sx={{ display: 'flex', p: 1, m: 1, bgcolor: 'background.paper', justifyContent: 'center' }}>
+              <b> Personal Details </b>
+            </Box>
+              </div>
               <TextField
                 margin="normal"
                 required
@@ -113,10 +107,14 @@ export default function SignUpBuyer() {
                 id="password"
                 autoComplete="current-password"
               />
+              <div style={{ width: "100%" }}>
+              <Box sx={{ display: 'flex', p: 1, m: 1, bgcolor: 'background.paper', justifyContent: 'center' }}>
+              <b> Payment Details </b>
+            </Box>
+              </div>
               <TextField
                 margin="normal"
                 id="payment_details"
-                type="number"
                 name="payment_details"
                 label="Credit Card Details"
                 InputLabelProps={{
