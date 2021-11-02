@@ -5,7 +5,7 @@ const app = express()
 const usersController = require('./controllers/users')
 const listingsController = require('./controllers/listings')
 const ordersController = require('./controllers/orders')
-// const Listing = require('./models/listings')
+const session = require('express-session')
 const port = process.env.PORT ?? 3001
 
 // * Config
@@ -17,6 +17,15 @@ mongoose.connection.once('open', () => {
 
 
 // * Middleware
+app.use(session({
+  secret: "",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    maxAge: 3600000
+  }
+}));
 app.use(express.static(path.join(__dirname, "/client/build")))
 app.use(express.json({extended: true}))
 app.use('/api/users', usersController)
@@ -24,11 +33,20 @@ app.use('/api/listings', listingsController)
 app.use('/api/orders', ordersController)
 
 
+app.use((req,res,next)=>{
+  console.log(req.session);
+  next();
+})
+
 // * Routes
 app.get('*', (req,res) => {
   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 })
 
+app.use((req,res,next)=>{
+  console.log(req.session);
+  next();
+})
 
 // * Listen
 app.listen(port, () => {

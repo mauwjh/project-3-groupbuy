@@ -4,6 +4,7 @@ const User = require("../models/users")
 const Listing = require("../models/listings")
 const Order = require("../models/orders")
 const bcrypt = require("bcrypt")
+const session = require("express-session")
 
 const methodOverride = require("method-override");
 router.use(methodOverride("_method"));
@@ -14,7 +15,52 @@ router.use(methodOverride("_method"));
 //LOGIN
 //Login "login" ---> Login for existing Buyer/Seller
 
-//! Refer to Sessions Controller
+// router.get("/",(req,res)=>{
+//     console.log("body1",req.body)
+//     console.log("params1",req.params)
+//     res.json(req.body)
+// })
+
+router.post("/", async (req,res)=>{
+    console.log("body2",req.body)
+    const { email, password } = req.body
+    const user = await User.findOne({ email })
+    
+    if(user) {
+        if (password === user.password) {
+            const { password, ...rest } = user;
+            const userInfo = Object.assign({},{...rest})
+            req.session.user = userInfo;
+            res.json({
+                message: "Login Successful!",
+                userInfo
+            });
+        }
+        else {
+            res.send("WRONG PASSWORD BODOH")
+        }
+    }
+    else if(!user) {
+         res.send("USER NOT FOUND")
+    }
+
+
+
+
+// if (passwordValid) {
+//     const { password, ...rest } = user;
+//     const userInfo = Object.assign({}, {...rest});
+//     req.session.user = userInfo;
+
+//     res.json({
+//         message: "Authentication Successful!",
+//         token,
+//         userInfo,
+//         expiresAt
+//     });
+// }
+
+})
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -70,19 +116,19 @@ router.post("/buyer", async (req,res)=>{
 //User "user/:id" --> Display User's Profile
 //With Populate, user should have all the orders and listings related to this user id. 
 
-router.get("/:id",async (req,res)=>{
-    const { id } = req.params;
-    const user = User.findById(id)
-    res.json(user)
-})
+// router.get("/:id",async (req,res)=>{
+//     const { id } = req.params;
+//     const user = User.findById(id)
+//     res.json(user)
+// })
 
 //User "user/:id/edit" ---> Edit User's Profile 
 
-router.put("/:id/edit",async (req,res)=>{
-    const { id } = req.params;
-    const user = await User.findByIdAndUpdate( id , req.body )
-    res.json(user)
-})
+// router.put("/:id/edit",async (req,res)=>{
+//     const { id } = req.params;
+//     const user = await User.findByIdAndUpdate( id , req.body )
+//     res.json(user)
+// })
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -92,22 +138,22 @@ router.put("/:id/edit",async (req,res)=>{
 
 //User "user/:id" ---> Display Seller's Listings  
 
-router.get("/:id",async (req,res)=>{
-    const { id } = req.params;
-    const listing = await Listing.find({ "seller_id._id": id })
-    res.json(listing)
-})
+// router.get("/:id",async (req,res)=>{
+//     const { id } = req.params;
+//     const listing = await Listing.find({ "seller_id._id": id })
+//     res.json(listing)
+// })
 
 //User "user/:id" --> Display Orders on Seller's Listings 
 //! Same page or seperate page? 
 
 //User "user/:id" --> Display Buyer's Orders (Shift to Orders.js)
 
-router.get("/:id",async (req,res)=>{
-    const { id } = req.params;
-    const order = await Order.find({"buyer_id._id": id })
-    res.json(order)
-})
+// router.get("/:id",async (req,res)=>{
+//     const { id } = req.params;
+//     const order = await Order.find({"buyer_id._id": id })
+//     res.json(order)
+// })
 
 
 //////////////////////////////////////////////////////////////////////////
