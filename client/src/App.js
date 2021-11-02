@@ -7,10 +7,14 @@ import Login from "./Components/Login";
 import Home from "./Components/Home";
 import Listing from "./Components/Listing";
 import Order from "./Components/Order";
+import React, { useState } from "react"
+import AuthApi from "./Utility/AuthApi"
 
 function App() {
+  const [auth, setAuth ] = useState({session: false, userInfo:{}});
   return (
     <div className="App">
+      <AuthApi.Provider value={{ auth, setAuth }}>
       <NaviBar />
       <Switch>
         <Route exact path="/login" component={Login}></Route>
@@ -26,6 +30,7 @@ function App() {
           <Order />
         </Route>
       </Switch>
+      </AuthApi.Provider>
     </div>
   );
 }

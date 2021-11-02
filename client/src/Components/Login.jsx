@@ -1,28 +1,34 @@
-import React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React, { useContext } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import AuthApi from "../Utility/AuthApi"
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -30,30 +36,39 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const authApi = useContext(AuthApi);
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-
-    axios.post("/api/users",{
-    email: data.get('email'),
-    password: data.get('password')
-    })
-    .then( 
-      (response) => { 
-        console.log('Response Data',response.data);
-        console.log('UserInfo',response.data);
-      },
-      (error) => { console.log('Error',error) }
-    );
-
-    axios.get("/api/users")
-    .then( 
-      (response) => { 
-        console.log('Response1',response)
-         })
-  };
-
+    
+    axios
+    .post("/api/users", {
+      email: data.get("email"),
+        password: data.get("password"),
+      })
+      .then(
+        (response) => {
+          console.log("Response Data", response.data);
+          console.log("UserInfo", response.data);
+          if (response.data.auth) {
+            console.log("I am logged in", response.data.auth)
+            console.log(response.data.userInfo._doc)
+            authApi.setAuth({session: response.data.auth,userInfo: response.data.userInfo._doc})
+          }
+        },
+        (error) => {
+          console.log("Error", error);
+        }
+        );
+        
+        axios.get("/api/users").then((response) => {
+          console.log("Response1", response);
+        });
+      };
+        
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -61,18 +76,23 @@ export default function Login() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
