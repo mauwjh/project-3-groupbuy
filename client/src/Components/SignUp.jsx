@@ -30,6 +30,18 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const [userType, setUserType] = React.useState("")
+
+  const handleClick1 = () => {
+    setUserType("buyer")
+    console.log(userType)
+  };
+   
+  const handleClick2 = () => {
+    setUserType("seller")
+    console.log(userType)
+  };
+  
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -64,11 +76,13 @@ export default function SignUp() {
               Please select if you are a buyer or a seller
             </Typography>
             <Stack spacing={2} sx= {{my:2}}>
-           <Button component= { Link} href= "signup/buyer" color="inherit" variant="outlined">
-            Buyer
+              <Button  name = "buyer" onClick={handleClick1} component= { Link} href= "signup/buyer" color="inherit" variant="outlined">
+                Buyer
+                {/* Post usertype : buyer*/}
               </Button>
-              <Button component= { Link} href= "signup/seller" color="inherit" variant="outlined">
-            Seller
+              <Button name = "seller" onClick={handleClick2} component= { Link} href= "signup/seller" color="inherit" variant="outlined">
+                Seller
+                {/* Post usertype : seller*/}
           </Button> 
             </Stack>
             <Copyright sx={{ mt: 5 }} />
