@@ -4,21 +4,27 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import { Stack } from "@mui/material";
-import InputAdornment from '@mui/material/InputAdornment';
+import InputAdornment from "@mui/material/InputAdornment";
 import { Button } from "@mui/material";
-import sgLocale from 'date-fns/locale/en-GB';
+import sgLocale from "date-fns/locale/en-GB";
 
-const ListingNew = () => {  
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
+const ListingNew = () => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [price, setPrice] = useState()
-  const [minQty, setMinQty] = useState()
-  const [maxQty, setMaxQty] = useState()
+  const [price, setPrice] = useState();
+  const [minQty, setMinQty] = useState();
+  const [maxQty, setMaxQty] = useState();
 
   return (
-    <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }} onSubmit={(event) => {event.preventDefault(); console.log(name)}}>
+    <div
+      style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}
+      onSubmit={(event) => {
+        event.preventDefault();
+        console.log(name);
+      }}
+    >
       <h1>Create Listing</h1>
       <form>
         <TextField
@@ -32,6 +38,14 @@ const ListingNew = () => {
           required
           fullWidth
         />
+        <label htmlFor="contained-button-file">
+          <input
+            accept="image/*"
+            id="contained-button-file"
+            multiple
+            type="file"
+          />
+        </label>
         <p style={{ fontWeight: "bold", fontSize: "20px" }}>
           About Your Groupbuy
         </p>
@@ -49,9 +63,9 @@ const ListingNew = () => {
           rows={4}
         />
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={sgLocale}>
-          <Stack spacing={3} style={{ marginTop: "15px", marginBottom: "8px"}}>
+          <Stack spacing={3} style={{ marginTop: "15px", marginBottom: "8px" }}>
             <DatePicker
-              name='start_date'
+              name="start_date"
               disablePast
               label="Start Date"
               openTo="day"
@@ -63,7 +77,7 @@ const ListingNew = () => {
               renderInput={(params) => <TextField {...params} />}
             />
             <DatePicker
-              name='closing_date'
+              name="closing_date"
               disablePast
               label="Closing Date"
               openTo="day"
@@ -86,7 +100,7 @@ const ListingNew = () => {
           value={price}
           onChange={(event) => setPrice(event.target.value)}
           InputProps={{
-            startAdornment:<InputAdornment position="start">$</InputAdornment>
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
           required
           fullWidth
@@ -115,7 +129,9 @@ const ListingNew = () => {
           required
           fullWidth
         />
-        <Button style={{margin: '15px'}} type='submit' variant="contained">Submit</Button>
+        <Button style={{ margin: "15px" }} type="submit" variant="contained">
+          Submit
+        </Button>
       </form>
     </div>
   );

@@ -9,6 +9,12 @@ import Listing from "./Components/Listing";
 import Order from "./Components/Order";
 import React, { useState } from "react"
 import AuthApi from "./Utility/AuthApi"
+import ListingEdit from "./Components/ListingEdit";
+import User from "./Components/User";
+import SignUp from "./Components/SignUp";
+import SignUpBuyer from "./Components/SignUpBuyer";
+import SignUpSeller from "./Components/SignUpSeller";
+  
 
 function App() {
   const [auth, setAuth ] = useState({session: false, userInfo:{}});
@@ -19,15 +25,24 @@ function App() {
       <Switch>
         <Route exact path="/login" component={Login}></Route>
         <Route exact path="/" component={Home} />
+        <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/signup/buyer" component={SignUpBuyer} />
+        <Route exact path="/signup/seller" component={SignUpSeller} />
         <Route path="/listing/new">
           <ListingNew />
         </Route>
         <Route exact path="/about" component={About}></Route>
+        <Route path="/listing/:id/edit">
+          <ListingEdit />
+        </Route>
         <Route path="/listing/:id">
           <Listing />
         </Route>
         <Route path="/order/:id">
           <Order />
+        </Route>
+        <Route path="/user/:id">
+          <User />
         </Route>
       </Switch>
       </AuthApi.Provider>
@@ -36,19 +51,4 @@ function App() {
 }
 export default App;
 
-// <>
-// <div className="App">
-//     <Switch>
-//     <NaviBar/>
-//     <Route path='/listing/new'>
-//         <ListingNew />
-//       </Route>
-//       <Route path='/listing/Login'>
-//       <Login/>
-//       </Route>
-//       <Route path='/listing/about'>
-//       <About />
-//     </Route>
-//   </Switch>
-// </div>
-// </>
+

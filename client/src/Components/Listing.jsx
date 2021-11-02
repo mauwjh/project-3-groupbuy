@@ -7,21 +7,24 @@ import { Grid } from "@mui/material";
 import { differenceInDays } from "date-fns";
 import { Button } from "@mui/material";
 import axios from "axios";
+import OrdersTable from "./OrdersTable";
 
 const Listing = () => {
+  const [buyerOrder, setBuyerOrder] = useState([]);
+  const [user, setUser] = useState("buyer");
   const [data, setData] = useState([]);
   const [orders, setOrders] = useState([]);
   const [numOfOrders, setNumOfOrders] = useState(0);
 
   const { id } = useParams();
-  console.log("HELLO ID", id )
+  console.log("HELLO ID", id);
 
   useEffect(() => {
     const fetchListing = async (id) => {
-      console.log("id",id)
+      console.log("id", id);
       const url = `/api/listings/${id}`;
       const data = await axios.get(url);
-      console.log("DD",data.data)
+      console.log("DD", data.data);
       setData(data.data);
     };
     fetchListing(id);
@@ -96,7 +99,8 @@ const Listing = () => {
             {numOfOrders}
           </p>
           <p style={{ marginTop: "-35px" }}>
-            units reserved out of a target of {data?.listing?.max_quantity} units
+            units reserved out of a target of {data?.listing?.max_quantity}{" "}
+            units
           </p>
           <p style={{ fontSize: "36px", fontWeight: "bold" }}>
             {orders?.length}
@@ -107,25 +111,37 @@ const Listing = () => {
           <p style={{ fontSize: "36px", fontWeight: "bold" }}>
             {timeRemaining}
           </p>
-          <p style={{ marginTop: "-35px", marginBottom: '65px' }}>days remaining</p>
+          <p style={{ marginTop: "-35px", marginBottom: "65px" }}>
+            days remaining
+          </p>
           <Link
             to={`/order/`}
             style={{
               textDecoration: "none",
-              width: '100%'
+              width: "100%",
             }}
           >
-            <Button
-              type="submit"
-              variant="contained"
-              size='large'
-              style={{minWidth: '100%'}}
-            >
-              Support this groupbuy
-            </Button>
+            {user === "buyer" && buyerOrder.length === 0 ? (
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                style={{ minWidth: "100%" }}
+              >
+                Support this groupbuy
+              </Button>
+            ) : null}
           </Link>
         </div>
       </div>
+      {user === "seller" && data?.order?.length > 0 ? (
+        <div>
+          <h1>All Orders</h1>
+          <OrdersTable ordersData={data.order} />
+        </div>
+      ) : user === "buyer" && buyerOrder.length > 0 ? (
+        <h1>Your Order</h1>
+      ) : null}
     </div>
   );
 };
