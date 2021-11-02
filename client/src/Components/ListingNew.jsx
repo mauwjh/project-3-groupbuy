@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import TextField from "@mui/material/TextField";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -8,6 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Button } from "@mui/material";
 import sgLocale from "date-fns/locale/en-GB";
 import axios from "axios";
+import AuthApi from "../Utility/AuthApi";
 
 const ListingNew = () => {
   const [name, setName] = useState("");
@@ -18,6 +19,7 @@ const ListingNew = () => {
   const [minQty, setMinQty] = useState();
   const [maxQty, setMaxQty] = useState();
   const [file, setFile] = useState();
+  const session = useContext(AuthApi);
 
   const createNewListing = async (listingData) => {
     console.log(listingData)
@@ -31,7 +33,7 @@ const ListingNew = () => {
   const uploadFile = async () => {
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('upload_preset', 'r8r3tzoy')
+    formData.append('upload_preset', process.env.CLOUDINARY_API ?? 'r8r3tzoy')
 
     const res = await axios.post('https://api.cloudinary.com/v1_1/mauwjh/image/upload', formData)
     return res.data.secure_url 
@@ -46,7 +48,7 @@ const ListingNew = () => {
     min_quantity: minQty,
     max_quantity: maxQty,
     img: '',
-    seller_id: "617e47e6ef60be661fd84040",
+    seller_id: session.auth.userInfo._id,
   });
 
   return (
