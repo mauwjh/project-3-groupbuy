@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
-import seedData from "../Models/ListingSeed";
-import seedOrders from "../Models/OrderSeed";
 import ProgressBar from "./ProgressBar";
 import { Grid } from "@mui/material";
 import { differenceInDays } from "date-fns";
 import { Button } from "@mui/material";
 import axios from "axios";
 import OrdersTable from "./OrdersTable";
+import AuthApi from "../Utility/AuthApi";
 
 const Listing = () => {
   const [buyerOrder, setBuyerOrder] = useState([]);
-  const [user, setUser] = useState("buyer");
   const [data, setData] = useState([]);
   const [orders, setOrders] = useState([]);
   const [numOfOrders, setNumOfOrders] = useState(0);
+  const [percOfGoal, setPercOfGoal] = useState(0);
+  const session = useContext(AuthApi);
 
   const { id } = useParams();
   console.log("HELLO ID", id);
@@ -26,6 +26,15 @@ const Listing = () => {
       const data = await axios.get(url);
       console.log("DD", data.data);
       setData(data.data);
+      setOrders(data.data.order);
+      setNumOfOrders(
+        data.data.order.map((a) => a.qty_reserved).reduce((a, b) => a + b, 0)
+      );
+      setPercOfGoal(
+        (data.data.order.map((a) => a.qty_reserved).reduce((a, b) => a + b, 0) /
+          parseInt(data.data.listing.max_quantity)) *
+          100
+      );
     };
     fetchListing(id);
   }, [id]);
@@ -90,7 +99,7 @@ const Listing = () => {
         >
           <Grid spacing={1} container>
             <Grid xs item>
-              <ProgressBar data={numOfOrders} />
+              <ProgressBar data={percOfGoal} />
             </Grid>
           </Grid>
           <p
@@ -99,29 +108,36 @@ const Listing = () => {
             {numOfOrders}
           </p>
           <p style={{ marginTop: "-35px" }}>
-            units reserved out of a target of {data?.listing?.max_quantity}{" "}
+            reserved out of a target of {data?.listing?.max_quantity}{" "}
             units
           </p>
           <p style={{ fontSize: "36px", fontWeight: "bold" }}>
             {orders?.length}
           </p>
-          <p style={{ marginTop: "-35px" }}>
+          {orders?.length === 1 ?  <p style={{ marginTop: "-35px" }}>
+            buyer has participated in this groupbuy
+          </p> :  <p style={{ marginTop: "-35px" }}>
             buyers have participated in this groupbuy
-          </p>
+          </p>}
           <p style={{ fontSize: "36px", fontWeight: "bold" }}>
             {timeRemaining}
           </p>
-          <p style={{ marginTop: "-35px", marginBottom: "65px" }}>
+          {timeRemaining === 1 ? <p style={{ marginTop: "-35px", marginBottom: "65px" }}>
+            day remaining
+          </p>: <p style={{ marginTop: "-35px", marginBottom: "65px" }}>
             days remaining
-          </p>
-          <Link
-            to={`/order/${id}`}
-            style={{
-              textDecoration: "none",
-              width: "100%",
-            }}
-          >
-            {user === "buyer" && buyerOrder.length === 0 ? (
+          </p>}
+          
+
+          {session?.auth?.userInfo?.usertype === "buyer" &&
+          buyerOrder.length === 0 ? (
+            <Link
+              to={`/order/${id}`}
+              style={{
+                textDecoration: "none",
+                width: "100%",
+              }}
+            >
               <Button
                 type="submit"
                 variant="contained"
@@ -130,16 +146,29 @@ const Listing = () => {
               >
                 Support this groupbuy
               </Button>
-            ) : null}
-          </Link>
+            </Link>
+          ) : session?.auth?.userInfo?.usertype === "buyer" ? (
+            <Link to="/login" style={{ textDecoration: "none", width: '100%' }}>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                style={{ minWidth: "100%" }}
+              >
+                Login to support
+              </Button>
+            </Link>
+          ) : null}
         </div>
       </div>
-      {user === "seller" && data?.order?.length > 0 ? (
+      {session?.auth?.userInfo?.usertype === "seller" &&
+      data?.order?.length > 0 ? (
         <div>
           <h1>All Orders</h1>
-          <OrdersTable ordersData={data.order} />
+          <OrdersTable ordersData={data?.order} />
         </div>
-      ) : user === "buyer" && buyerOrder.length > 0 ? (
+      ) : session?.auth?.userInfo?.usertype === "buyer" &&
+        buyerOrder.length > 0 ? (
         <h1>Your Order</h1>
       ) : null}
     </div>
