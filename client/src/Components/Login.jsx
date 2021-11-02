@@ -1,4 +1,3 @@
-
 import React, { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,7 +12,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import axios from "axios";
-import AuthApi from "../Utility/AuthApi"
+import AuthApi from "../Utility/AuthApi";
 
 function Copyright(props) {
   return (
@@ -38,37 +37,33 @@ const theme = createTheme();
 export default function Login() {
   const authApi = useContext(AuthApi);
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    
+
     axios
-    .post("/api/users", {
-      email: data.get("email"),
+      .post("/api/users", {
+        email: data.get("email"),
         password: data.get("password"),
       })
-      .then(
-        (response) => {
-          console.log("Response Data", response.data);
-          console.log("UserInfo", response.data);
+      .then((response) => {
+          // console.log("Response Data", response.data);
+          // console.log("UserInfo", response.data);
           if (response.data.auth) {
-            console.log("I am logged in", response.data.auth)
-            console.log(response.data.userInfo._doc)
-            authApi.setAuth({session: response.data.auth,userInfo: response.data.userInfo._doc})
+            console.log("Am I logged in?", response.data.auth, response.data.userInfo._doc);
+            authApi.setAuth({
+              session: response.data.auth,
+              userInfo: response.data.userInfo._doc,
+            });
           }
         },
         (error) => {
           console.log("Error", error);
         }
-        );
-        
-        axios.get("/api/users").then((response) => {
-          console.log("Response1", response);
-        });
-      };
-        
+      );
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

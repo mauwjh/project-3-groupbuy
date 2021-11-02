@@ -9,7 +9,7 @@ const session = require('express-session')
 const port = process.env.PORT ?? 3001
 
 // * Config
-const mongoURI = process.env.MONGODB_URI ?? 'mongodb+srv://desertkrieg:<singapore>@cluster0.btgsa.mongodb.net/groupBuy?retryWrites=true&w=majority'
+const mongoURI = process.env.MONGODB_URI ?? 'mongodb+srv://desertkrieg:@cluster0.btgsa.mongodb.net/groupBuy?retryWrites=true&w=majority'
 mongoose.connect(mongoURI)
 mongoose.connection.once('open', () => {
   console.log('connected to mongoose...'+ mongoURI)
@@ -22,8 +22,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    httpOnly: true,
-    maxAge: 3600000
+    httpOnly: true
+    // maxAge: 3600000
   }
 }));
 app.use(express.static(path.join(__dirname, "/client/build")))

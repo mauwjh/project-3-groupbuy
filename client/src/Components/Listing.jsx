@@ -25,7 +25,16 @@ const Listing = () => {
       const url = `/api/listings/${id}`;
       const data = await axios.get(url);
       console.log("DD", data.data);
+      console.log("Orders", (data.data.order).length)
       setData(data.data);
+// <<<<<<< darr-listing
+//       setOrders(data.data.order)
+//       let totalOrders = 0
+//       for (let i=0;i<(data.data.order).length;i++){
+//         totalOrders+=data.data.order[i].qty_reserved
+//       }
+//       setNumOfOrders(totalOrders)
+// =======
       setOrders(data.data.order);
       setNumOfOrders(
         data.data.order.map((a) => a.qty_reserved).reduce((a, b) => a + b, 0)
