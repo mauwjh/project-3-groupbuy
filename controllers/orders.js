@@ -12,7 +12,7 @@ const Order = require("../models/orders")
 
 router.post("/new", async (req,res)=>{
     console.log("body", req.body);
-        const user = await Listing.create({
+        const user = await Order.create({
             buyer_id: req.body.buyer_id,
             listing_id: req.body.listing_id,
             qty_reserved: req.body.qty_reserved

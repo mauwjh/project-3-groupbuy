@@ -5,6 +5,8 @@ import Orders from "../Models/OrderSeed";
 import GroupbuyDetails from "./GroupbuyDetails";
 
 const User = () => {
+  
+
   return (
     <>
       <div className='seller-account'>
