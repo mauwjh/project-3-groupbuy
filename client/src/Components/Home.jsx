@@ -10,9 +10,9 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState, useContext } from "react";
+import {Link} from 'react-router-dom'
 import AuthApi from "../Utility/AuthApi"
 
 const URL = "/api/listings";
@@ -98,7 +98,8 @@ export default function Home() {
                   <CardMedia
                     component="img"
                     sx={{
-                      height: 150
+                      height: 150,
+                      
                     }}
                     image={listings.img}
                     alt="random"
@@ -107,12 +108,12 @@ export default function Home() {
                     <Typography gutterBottom variant="h5" component="h2" sx={{fontSize: 'clamp(1rem, 2.5vw, 1.2rem)'}}>
                       {listings.name}
                     </Typography>
-                    <Typography>
+                    <Typography sx={{minHeight: 120}}>
                       {listings.description}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small"><a href={"/listing/" + listings._id}>View</a></Button>
+                    <Link to={`/listing/${listings._id}`}><Button size="small">View</Button></Link>
                     <Button size="small">Edit</Button>
                   </CardActions>
                 </Card>
