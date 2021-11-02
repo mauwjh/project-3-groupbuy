@@ -1,116 +1,127 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import seedData from "../Models/ListingSeed";
-import seedOrders from "../Models/OrderSeed";
-import ProgressBar from "./ProgressBar";
-import { Grid } from "@mui/material";
-import { differenceInDays } from "date-fns";
+import {useParams} from 'react-router'
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
+
+const createOrder = async (obj) => {
+  console.log(obj)
+  const url = `/api/orders/new`
+  const data = await axios.post(url, obj)
+  console.log('data', data)
+}
 
 const Order = () => {
   const [data, setData] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [numOfOrders, setNumOfOrders] = useState(0);
-  const [qty, setQty] = useState();
+  const [qty, setQty] = useState(0);
+
+  const { id } = useParams();
+  console.log("HELLO ID", id);  
 
   useEffect(() => {
-    setData(seedData);
-    setOrders(seedOrders);
-    setNumOfOrders(
-      Math?.round(
-        (orders?.map((a) => a?.qty_reserved)?.reduce((a, b) => a + b, 0) /
-          parseInt(data[0]?.max_quantity)) *
-          100
-      )
-    );
-  }, [data, orders]);
-
-  const timeRemaining = differenceInDays(
-    new Date(seedData[0].closing_date),
-    new Date()
-  );
+    const fetchListing = async (id) => {
+      console.log("id", id);
+      const url = `/api/listings/${id}`;
+      const data = await axios.get(url);
+      console.log("DD", data.data);
+      setData(data.data);
+    };
+    fetchListing(id);
+  }, [id]);
 
   return (
     <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}>
-      <h1>{data[0]?.name}</h1>
-      <h4>{data[0]?.description}</h4>
+      <h1>Support this Groupbuy</h1>
       <div
-        className="details-container"
-        style={{ display: "flex", flexFlow: "row wrap" }}
+        style={{
+          width: "100%",
+          display: "flex",
+          flexFlow: "row wrap",
+          justifyContent: "center",
+          alignItems: "flex-start",
+        }}
       >
         <div
-          className="image"
           style={{
-            width: "65%",
-            height: "500px",
+            flex: 1.5,
             display: "flex",
-            justifyContent: "center",
+            flexFlow: "column",
+            padding: "25px",
+            border: "1px solid #CDCDCD",
             alignItems: "center",
-            overflow: "hidden",
+            justifyContent: "left",
           }}
         >
-          <img
-            src={data[0]?.img}
-            style={{ minHeight: "100%", minWidth: "100% " }}
-            alt="transparent"
+          <div style={{ width: "100%", display: "flex", flexFlow: "row",}}>
+            <div
+              className="image"
+              style={{
+                maxWidth: "355px",
+                maxHeight: "200px",
+                minWidth: "200px",
+                minHeight: "200px",
+                width: '60%',
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                overflow: "hidden",
+              }}
+            >
+              <img
+                src={data?.listing?.img}
+                style={{ minHeight: "100%", minWidth: "100% " }}
+                alt="transparent"
+              />
+            </div>
+            <div
+              style={{
+                maxWidth: "50%",
+                height: "200px",
+                display: "flex",
+                flexFlow: "column",
+                padding: "25px",
+                boxSizing: "border-box",
+                alignItems: "flex-start",
+                justifyContent: "left",
+                textAlign: "left",
+              }}
+            >
+              <h2 style={{ margin: "0" }}>{data?.listing?.name}</h2>
+              <h3 style={{ marginTop: "10px" }}>{data?.listing?.description}</h3>
+            </div>
+          </div>
+          <TextField
+            name="qty_reserved"
+            type="number"
+            label="Quantity"
+            variant="outlined"
+            placeholder="Quantity to Reserve"
+            margin="normal"
+            value={qty}
+            onChange={(event) => setQty(event.target.value)}
+            required
+            fullWidth
           />
         </div>
         <div
           style={{
+            flex: 1,
+            marginLeft: "4%",
+            textAlign: "left",
             display: "flex",
-            height: "500px",
-            width: "32%",
-            flexFlow: "column",
-            justifyContent: "left",
             alignItems: "flex-start",
-            marginLeft: "3%",
+            justifyContent: "left",
           }}
         >
-          <Grid spacing={1} container>
-            <Grid xs item>
-              <ProgressBar data={numOfOrders} />
-            </Grid>
-          </Grid>
-          <p
-            style={{ fontSize: "36px", fontWeight: "bold", marginTop: "15px" }}
-          >
-            {numOfOrders}
-          </p>
-          <p style={{ marginTop: "-35px" }}>
-            units reserved out of a target of {data[0]?.max_quantity} units
-          </p>
-          <p style={{ fontSize: "36px", fontWeight: "bold" }}>
-            {orders?.length}
-          </p>
-          <p style={{ marginTop: "-35px" }}>
-            buyers have participated in this groupbuy
-          </p>
-          <p style={{ fontSize: "36px", fontWeight: "bold" }}>
-            {timeRemaining}
-          </p>
-          <p style={{ marginTop: "-35px", marginBottom: "65px" }}>
-            days remaining
-          </p>
+          <form onSubmit={(event) => {event.preventDefault(); createOrder({buyer_id: '617e4f11fc00432262a43213', listing_id: id, qty_reserved: qty})}}>
+            <h2>Summary</h2>
+            <p>Quantity: {qty}</p>
+            <p>Price: S${data?.listing?.price_per_unit}</p>
+            <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
+          <Button type="submit" variant="contained">Checkout</Button>
+          </form>
         </div>
       </div>
-      <h2>Support this groupbuy</h2>
-      <form>
-        <TextField
-          name="qty_reserved"
-          label="Quantity"
-          variant="outlined"
-          placeholder="Quantity to Reserve"
-          margin="normal"
-          value={qty}
-          onChange={(event) => setQty(event.target.value)}
-          required
-          fullWidth
-        />
-        <Button style={{ margin: "15px" }} type="submit" variant="contained">
-          Submit
-        </Button>
-      </form>
     </div>
   );
 };

@@ -67,7 +67,7 @@ const GroupbuyDetails = ({ data, orders }) => {
           )}{" "}
           orders out of a {data.max_quantity} order target
         </p>
-        <p>Closing Date: {data.closing_date.slice(0,15)}</p>
+        <p>Closing Date: {data.closing_date.slice(4,15)}</p>
       </div>
     </div>
   );
