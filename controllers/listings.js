@@ -58,14 +58,13 @@ router.post("/new", async (req,res)=>{
     console.log("body", req.body);
         const user = await Listing.create({
             name: req.body.name,
-            description: req.body.username,
+            description: req.body.description,
             start_date: req.body.start_date,
             closing_date: req.body.closing_date,
             price_per_unit: req.body.price_per_unit,
             min_quantity: req.body.min_quantity,
             max_quantity: req.body.max_quantity,
             img: req.body.img,
-            website: req.body.website,
             seller_id: req.body.seller_id,
     })
 })

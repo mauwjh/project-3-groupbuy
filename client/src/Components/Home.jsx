@@ -92,22 +92,19 @@ export default function Home() {
               <Grid item key={key} xs={12} sm={6} md={4}>
                 <Card
                   sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
+                    maxWidth: 400,
                   }}
                 >
                   <CardMedia
                     component="img"
                     sx={{
-                      // 16:9
-                      //pt: "10%",
+                      height: 150
                     }}
                     image={listings.img}
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" component="h2" sx={{fontSize: 'clamp(1rem, 2.5vw, 1.2rem)'}}>
                       {listings.name}
                     </Typography>
                     <Typography>

@@ -115,7 +115,7 @@ const Listing = () => {
             days remaining
           </p>
           <Link
-            to={`/order/`}
+            to={`/order/${id}`}
             style={{
               textDecoration: "none",
               width: "100%",

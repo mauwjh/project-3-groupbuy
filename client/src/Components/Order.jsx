@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 
 const createOrder = async (obj) => {
-  console.log(obj)
   const url = `/api/orders/new`
   const data = await axios.post(url, obj)
   console.log('data', data)
