@@ -7,6 +7,7 @@ import { Stack } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Button } from "@mui/material";
 import sgLocale from "date-fns/locale/en-GB";
+import axios from "axios";
 
 const ListingNew = () => {
   const [name, setName] = useState("");
@@ -16,6 +17,37 @@ const ListingNew = () => {
   const [price, setPrice] = useState();
   const [minQty, setMinQty] = useState();
   const [maxQty, setMaxQty] = useState();
+  const [file, setFile] = useState();
+
+  const createNewListing = async (listingData) => {
+    console.log(listingData)
+    const res = await uploadFile()
+    listingData.img = res
+    const url = `/api/listings/new`;
+    const data = await axios.post(url, listingData);
+    console.log(data)
+  };
+
+  const uploadFile = async () => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', 'r8r3tzoy')
+
+    const res = await axios.post('https://api.cloudinary.com/v1_1/mauwjh/image/upload', formData)
+    return res.data.secure_url 
+  }
+
+  const setListing = () => ({
+    name: name,
+    description: description,
+    start_date: startDate,
+    closing_date: endDate,
+    price_per_unit: price,
+    min_quantity: minQty,
+    max_quantity: maxQty,
+    img: '',
+    seller_id: "617e47e6ef60be661fd84040",
+  });
 
   return (
     <div
@@ -26,7 +58,7 @@ const ListingNew = () => {
       }}
     >
       <h1>Create Listing</h1>
-      <form>
+      <form onSubmit={() => createNewListing(setListing())}>
         <TextField
           name="name"
           label="Listing Title"
@@ -38,12 +70,20 @@ const ListingNew = () => {
           required
           fullWidth
         />
+        <p style={{ fontWeight: "bold", fontSize: "20px" }}>
+          Upload a Photo for your Listing
+        </p>
         <label htmlFor="contained-button-file">
           <input
             accept="image/*"
             id="contained-button-file"
             multiple
             type="file"
+            onChange={(event) => {
+              const file = event.target.files[0];
+              console.log(file);
+              setFile(file);
+            }}
           />
         </label>
         <p style={{ fontWeight: "bold", fontSize: "20px" }}>
