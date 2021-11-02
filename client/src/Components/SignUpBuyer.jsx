@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import SetMeal from "@mui/icons-material/SetMeal";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import axios from "axios";
 
 const theme = createTheme();
 
@@ -25,6 +25,22 @@ export default function SignUpBuyer() {
       password: data.get("password"),
       payment_details: data.get("payment_details"),
     });
+    axios
+      .post("/api/users/buyer", {
+        usertype: "buyer",
+        username: data.get("username"),
+        email: data.get("email"),
+        password: data.get("password"),
+        payment_details: data.get("payment_details"),
+        name: "Nil",
+        address: "Nil",
+        business_name: "Nil",
+        website: "Nil",
+        contact_number: "Nil",
+      })
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   return (
@@ -57,16 +73,25 @@ export default function SignUpBuyer() {
               alignItems: "center",
             }}
           >
-             <div style={{ width: "100%" }}>
-              <Box sx={{ display: 'flex', p: 1, m: 1, bgcolor: 'background.paper', alignItems: 'center',  justifyContent: 'center'}}>
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <SetMeal />
-            </Avatar>
-                <Typography variant="h4" component="div" sx={{ pl: 1 }} >
-               Buyer
-              </Typography>
-            </Box>
-              </div>
+            <div style={{ width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  p: 1,
+                  m: 1,
+                  bgcolor: "background.paper",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                  <SetMeal />
+                </Avatar>
+                <Typography variant="h4" component="div" sx={{ pl: 1 }}>
+                  Buyer
+                </Typography>
+              </Box>
+            </div>
             <Box
               component="form"
               noValidate
@@ -74,9 +99,17 @@ export default function SignUpBuyer() {
               sx={{ mt: 1 }}
             >
               <div style={{ width: "100%" }}>
-              <Box sx={{ display: 'flex', p: 1, m: 1, bgcolor: 'background.paper', justifyContent: 'center' }}>
-              <b> Personal Details </b>
-            </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    p: 1,
+                    m: 1,
+                    bgcolor: "background.paper",
+                    justifyContent: "center",
+                  }}
+                >
+                  <b> Personal Details </b>
+                </Box>
               </div>
               <TextField
                 margin="normal"
@@ -108,9 +141,17 @@ export default function SignUpBuyer() {
                 autoComplete="current-password"
               />
               <div style={{ width: "100%" }}>
-              <Box sx={{ display: 'flex', p: 1, m: 1, bgcolor: 'background.paper', justifyContent: 'center' }}>
-              <b> Payment Details </b>
-            </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    p: 1,
+                    m: 1,
+                    bgcolor: "background.paper",
+                    justifyContent: "center",
+                  }}
+                >
+                  <b> Payment Details </b>
+                </Box>
               </div>
               <TextField
                 margin="normal"

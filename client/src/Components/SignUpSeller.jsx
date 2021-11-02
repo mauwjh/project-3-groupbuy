@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import SetMeal from "@mui/icons-material/SetMeal";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import axios from "axios";
 
 const theme = createTheme();
 
@@ -28,6 +28,22 @@ export default function SignUpSeller() {
       website: data.get("website"),
       contact_number: data.get("contact_number"),
     });
+    axios
+      .post("/api/users/seller", {
+        usertype: "seller",
+        username: data.get("username"),
+        email: data.get("email"),
+        password: data.get("password"),
+        payment_details:"Nil",
+        business_name: data.get("business_name"),
+        website: data.get("website"),
+        contact_number: data.get("contact_number"),
+        address: "Nil",
+        name: "Nil"
+      })
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   return (
