@@ -12,7 +12,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import AuthApi from "../Utility/AuthApi"
 
 const URL = "/api/listings";
 
@@ -35,6 +36,8 @@ const theme = createTheme();
 
 export default function Home() {
   const [alllistings,setAllListings] = useState([])
+  const value = useContext(AuthApi)
+  console.log("value",value)
 
   useEffect(()=>{
     const fetchData = async () =>{

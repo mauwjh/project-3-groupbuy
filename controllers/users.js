@@ -33,7 +33,8 @@ router.post("/", async (req,res)=>{
             req.session.user = userInfo;
             res.json({
                 message: "Login Successful!",
-                userInfo
+                userInfo,
+                auth: true
             });
         }
         else {
