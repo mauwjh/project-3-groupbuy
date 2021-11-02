@@ -25,9 +25,11 @@ router.post("/", async (req,res)=>{
     console.log("body2",req.body)
     const { email, password } = req.body
     const user = await User.findOne({ email })
-    
-    if(user) {
-        if (password === user.password) {
+    if (user === null) {
+        return res.send("Username not found.")
+    }
+
+    if( bcrypt.compareSync(password, user.password)) {
             const { password, ...rest } = user;
             const userInfo = Object.assign({},{...rest})
             req.session.user = userInfo;
@@ -38,12 +40,8 @@ router.post("/", async (req,res)=>{
             });
         }
         else {
-            res.send("WRONG PASSWORD BODOH")
+            res.send("Password is invalid.")
         }
-    }
-    else if(!user) {
-         res.send("USER NOT FOUND")
-    }
 
 
 
@@ -79,7 +77,7 @@ router.post("/seller", async (req,res)=>{
         name: req.body.name,
         email: req.body.email,
         address: req.body.address,
-        payment_details: req.body.payment_details,
+        payment_details: "Nil",
         business_name: req.body.business_name,
         website: req.body.website,
         contact_number: req.body.contact_number,
@@ -98,11 +96,11 @@ router.post("/buyer", async (req,res)=>{
         password: req.body.password,
         name: req.body.name,
         email: req.body.email,
-        address: req.body.address,
+        address: "Nil",
         payment_details: req.body.payment_details,
         business_name: "Nil",
         website: "Nil",
-        contact_number: "Nil",
+        contact_number: 0,
     })
     res.json(user)
 })

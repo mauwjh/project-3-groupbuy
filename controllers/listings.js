@@ -27,7 +27,8 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req,res)=>{
     const { id } = req.params;
     const listing = await Listing.findById(id);
-    const order = await Order.find({}).populate('buyer_id').populate('listing_id').find({ _id: "617e98d3b21b23d9f022633f"})
+    const order = await Order.find({}).populate('buyer_id').populate('listing_id').find({ listing_id: {_id: id }})
+
     res.json({listing,order})
 })
 

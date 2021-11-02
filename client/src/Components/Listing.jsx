@@ -25,7 +25,14 @@ const Listing = () => {
       const url = `/api/listings/${id}`;
       const data = await axios.get(url);
       console.log("DD", data.data);
+      console.log("Orders", (data.data.order).length)
       setData(data.data);
+      setOrders(data.data.order)
+      let totalOrders = 0
+      for (let i=0;i<(data.data.order).length;i++){
+        totalOrders+=data.data.order[i].qty_reserved
+      }
+      setNumOfOrders(totalOrders)
     };
     fetchListing(id);
   }, [id]);
