@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";

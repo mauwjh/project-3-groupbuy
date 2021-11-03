@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import { Link as RouterLink } from "react-router-dom";
@@ -94,6 +94,10 @@ export default function Login() {
             myFunction();
             //alert("You have keyed in an Invalid UserName or PassWord");
           }
+          else {
+            console.log(response.data.message)
+          }
+          window.history.back()
         },
         (error) => {
           console.log("Error", error);

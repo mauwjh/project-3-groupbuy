@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/users")
-const Listing = require("../models/listings")
-const Order = require("../models/orders")
-const bcrypt = require("bcrypt")
-const session = require("express-session")
+const User = require("../models/users");
+const Listing = require("../models/listings");
+const Order = require("../models/orders");
+const bcrypt = require("bcrypt");
+const session = require("express-session");
 
 const methodOverride = require("method-override");
 router.use(methodOverride("_method"));
@@ -21,91 +21,95 @@ router.use(methodOverride("_method"));
 //     res.json(req.body)
 // })
 
-router.post("/", async (req,res)=>{
-    console.log("body2",req.body)
-    const { email, password } = req.body
-    const user = await User.findOne({ email })
-    if (user === null) {
-        return res.send("Username not found.")
-    }
+router.post("/", async (req, res) => {
+  console.log("body2", req.body);
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (user === null) {
+    return res.json({
+      message: "Username and Password is invalid",
+    });
+  }
+  if (bcrypt.compareSync(password, user.password)) {
+    const { password, ...rest } = user;
+    const userInfo = Object.assign({}, { ...rest });
+    req.session.user = userInfo;
+    res.json({
+      message: "Login Successful!",
+      userInfo,
+      auth: true,
+    });
+  } else {
+    res.json({
+      message: "Username and Password is invalid.",
+    });
+  }
 
-    if( bcrypt.compareSync(password, user.password)) {
-            const { password, ...rest } = user;
-            const userInfo = Object.assign({},{...rest})
-            req.session.user = userInfo;
-            res.json({
-                message: "Login Successful!",
-                userInfo,
-                auth: true
-            });
-        }
-        else {
-            res.send("Password is invalid.")
-        }
+  // if (passwordValid) {
+  //     const { password, ...rest } = user;
+  //     const userInfo = Object.assign({}, {...rest});
+  //     req.session.user = userInfo;
 
-
-
-
-// if (passwordValid) {
-//     const { password, ...rest } = user;
-//     const userInfo = Object.assign({}, {...rest});
-//     req.session.user = userInfo;
-
-//     res.json({
-//         message: "Authentication Successful!",
-//         token,
-//         userInfo,
-//         expiresAt
-//     });
-// }
-
-})
+  //     res.json({
+  //         message: "Authentication Successful!",
+  //         token,
+  //         userInfo,
+  //         expiresAt
+  //     });
+  // }
+});
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
 //SIGNUP
-//Signup "signup/seller" ---> Create new user for Seller 
+//Signup "signup/seller" ---> Create new user for Seller
 
-router.post("/seller", async (req,res)=>{
-    console.log("body", req.body);
-    req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-    const user = await User.create({
-        usertype: "seller",
-        username: req.body.username,
-        password: req.body.password,
-        name: req.body.name,
-        email: req.body.email,
-        address: req.body.address,
-        payment_details: "Nil",
-        business_name: req.body.business_name,
-        website: req.body.website,
-        contact_number: req.body.contact_number,
-    })
-    res.json(user);
-})
+router.post("/seller", async (req, res) => {
+  console.log("body", req.body);
+  req.body.password = bcrypt.hashSync(
+    req.body.password,
+    bcrypt.genSaltSync(10)
+  );
+  const user = await User.create({
+    usertype: "seller",
+    username: req.body.username,
+    password: req.body.password,
+    name: req.body.name,
+    email: req.body.email,
+    address: req.body.address,
+    payment_details: "Nil",
+    business_name: req.body.business_name,
+    website: req.body.website,
+    contact_number: req.body.contact_number,
+  });
+  res.json(user);
+});
 
-//Signup "signup/buyer" ---> Create new user for Buyer 
+//Signup "signup/buyer" ---> Create new user for Buyer
 
-router.post("/buyer", async (req,res)=>{
-    console.log("body", req.body);
-    req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
-    const user = await User.create({
-        usertype: "buyer",
-        username: req.body.username,
-        password: req.body.password,
-        name: req.body.name,
-        email: req.body.email,
-        address: "Nil",
-        payment_details: req.body.payment_details,
-        business_name: "Nil",
-        website: "Nil",
-        contact_number: 0,
-    })
-    res.json(user)
-})
+router.post("/buyer", async (req, res) => {
+  console.log("body", req.body);
+  req.body.password = bcrypt.hashSync(
+    req.body.password,
+    bcrypt.genSaltSync(10)
+  );
+  const user = await User.create({
+    usertype: "buyer",
+    username: req.body.username,
+    password: req.body.password,
+    name: req.body.name,
+    email: req.body.email,
+    address: "Nil",
+    payment_details: req.body.payment_details,
+    business_name: "Nil",
+    website: "Nil",
+    contact_number: 0,
+  });
+  res.json(user);
+});
 
-//!After creating user, redirect him to home page or create new listing? 
+//!After creating user, redirect him to home page or create new listing?
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -113,7 +117,7 @@ router.post("/buyer", async (req,res)=>{
 //USER
 
 //User "user/:id" --> Display User's Profile
-//With Populate, user should have all the orders and listings related to this user id. 
+//With Populate, user should have all the orders and listings related to this user id.
 
 // router.get("/:id",async (req,res)=>{
 //     const { id } = req.params;
@@ -121,7 +125,7 @@ router.post("/buyer", async (req,res)=>{
 //     res.json(user)
 // })
 
-//User "user/:id/edit" ---> Edit User's Profile 
+//User "user/:id/edit" ---> Edit User's Profile
 
 // router.put("/:id/edit",async (req,res)=>{
 //     const { id } = req.params;
@@ -129,13 +133,12 @@ router.post("/buyer", async (req,res)=>{
 //     res.json(user)
 // })
 
-
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
 //USER
 
-//User "user/:id" ---> Display Seller's Listings  
+//User "user/:id" ---> Display Seller's Listings
 
 // router.get("/:id",async (req,res)=>{
 //     const { id } = req.params;
@@ -143,8 +146,8 @@ router.post("/buyer", async (req,res)=>{
 //     res.json(listing)
 // })
 
-//User "user/:id" --> Display Orders on Seller's Listings 
-//! Same page or seperate page? 
+//User "user/:id" --> Display Orders on Seller's Listings
+//! Same page or seperate page?
 
 //User "user/:id" --> Display Buyer's Orders (Shift to Orders.js)
 
@@ -153,7 +156,6 @@ router.post("/buyer", async (req,res)=>{
 //     const order = await Order.find({"buyer_id._id": id })
 //     res.json(order)
 // })
-
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -176,7 +178,5 @@ router.post("/buyer", async (req,res)=>{
 
 //     res.send(user)
 // })
-
-
 
 module.exports = router;

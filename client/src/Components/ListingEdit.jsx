@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import {useParams} from 'react-router'
 import ListingSeed from '../Models/ListingSeed'
 import TextField from "@mui/material/TextField";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -8,9 +9,11 @@ import { Stack } from "@mui/material";
 import InputAdornment from '@mui/material/InputAdornment';
 import { Button } from "@mui/material";
 import sgLocale from 'date-fns/locale/en-GB';
+import AuthApi from "../Utility/AuthApi";
+import axios from 'axios'
+
 
 const ListingEdit = () => { 
-  const [data, setData] = useState()
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [startDate, setStartDate] = useState(new Date());
@@ -18,20 +21,61 @@ const ListingEdit = () => {
   const [price, setPrice] = useState()
   const [minQty, setMinQty] = useState()
   const [maxQty, setMaxQty] = useState()
+  const [file, setFile] = useState();
+  const {id} = useParams()
+  const session = useContext(AuthApi);
 
   useEffect(() => {
-    setData(ListingSeed[0])
-    setName(data?.name)
-    setDescription(data?.description)
-    setStartDate(data?.start_date)
-    setEndDate(data?.closing_date)
-    setPrice(data?.price_per_unit)
-    setMinQty(data?.min_quantity)
-    setMaxQty(data?.max_quantity)
-  }, [data])
+    const fetchData = async () =>{
+    const URL = `/api/listings/${id}`;
+    const res = await fetch(URL);
+    console.log(res)
+    const data = await res.json();
+    console.log(data)
+    setName(data?.listing?.name)
+    setDescription(data?.listing?.description)
+    setStartDate(data?.listing?.start_date)
+    setEndDate(data?.listing?.closing_date)
+    setPrice(data?.listing?.price_per_unit)
+    setMinQty(data?.listing?.min_quantity)
+    setMaxQty(data?.listing?.max_quantity)
+    setFile(data?.listing?.img)
+  };
+  fetchData();
+  }, [id])
+
+  const editListing = async (listingData) => {
+    console.log(listingData)
+    const res = await uploadFile()
+    listingData.img = res
+    const url = `/api/listings/${id}`;
+    const data = await axios.put(url, listingData);
+    console.log(data)
+  };
+
+  const uploadFile = async () => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', process.env.CLOUDINARY_API ?? 'r8r3tzoy')
+
+    const res = await axios.post('https://api.cloudinary.com/v1_1/mauwjh/image/upload', formData)
+    return res.data.secure_url 
+  }
+
+  const setListing = () => ({
+    name: name,
+    description: description,
+    start_date: startDate,
+    closing_date: endDate,
+    price_per_unit: price,
+    min_quantity: minQty, 
+    max_quantity: maxQty,
+    img: '',
+    seller_id: session.auth.userInfo._id,
+  });
 
   return (
-    <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }} onSubmit={(event) => {event.preventDefault(); console.log(name)}}>
+    <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }} onSubmit={(event) => {event.preventDefault(); editListing(setListing())}}>
       <h1>Create Listing</h1>
       <form>
         <TextField
@@ -45,6 +89,22 @@ const ListingEdit = () => {
           required
           fullWidth
         />
+        <p style={{ fontWeight: "bold", fontSize: "20px" }}>
+          Upload a Photo for your Listing
+        </p>
+        <label htmlFor="contained-button-file">
+          <input
+            accept="image/*"
+            id="contained-button-file"
+            multiple
+            type="file"
+            onChange={(event) => {
+              const file = event.target.files[0];
+              console.log(file);
+              setFile(file);
+            }}
+          />
+        </label>
         <p style={{ fontWeight: "bold", fontSize: "20px" }}>
           About Your Groupbuy
         </p>
@@ -65,7 +125,6 @@ const ListingEdit = () => {
           <Stack spacing={3} style={{ marginTop: "15px", marginBottom: "8px"}}>
             <DatePicker
               name='start_date'
-              disablePast
               label="Start Date"
               openTo="day"
               views={["year", "month", "day"]}
@@ -105,8 +164,8 @@ const ListingEdit = () => {
           fullWidth
         />
         <TextField
+        InputLabelProps={{ shrink: true }}
           name="min_quantity"
-          type="number"
           label="Minimum Quantity"
           variant="outlined"
           placeholder="Minimum Quantity"
@@ -117,8 +176,8 @@ const ListingEdit = () => {
           fullWidth
         />
         <TextField
+        InputLabelProps={{ shrink: true }}
           name="max_quantity"
-          type="number"
           label="Maximum Quantity"
           variant="outlined"
           placeholder="Maximum Quantity"
