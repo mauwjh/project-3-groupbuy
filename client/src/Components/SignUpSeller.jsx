@@ -100,7 +100,6 @@ export default function SignUpSeller() {
 
             <Box
               component="form"
-              noValidate
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
