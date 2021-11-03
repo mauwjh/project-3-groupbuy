@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {useParams} from 'react-router'
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import AuthApi from "../Utility/AuthApi";
 import axios from "axios";
 
 const createOrder = async (obj) => {
@@ -11,6 +12,7 @@ const createOrder = async (obj) => {
 }
 
 const Order = () => {
+  const session = useContext(AuthApi);
   const [data, setData] = useState([]);
   const [qty, setQty] = useState(0);
 
@@ -112,7 +114,7 @@ const Order = () => {
             justifyContent: "left",
           }}
         >
-          <form onSubmit={(event) => {event.preventDefault(); createOrder({buyer_id: '617e4f11fc00432262a43213', listing_id: id, qty_reserved: qty})}}>
+          <form onSubmit={(event) => {event.preventDefault(); createOrder({buyer_id: session?.auth?.userInfo?._id, listing_id: id, qty_reserved: qty})}}>
             <h2>Summary</h2>
             <p>Quantity: {qty}</p>
             <p>Price: S${data?.listing?.price_per_unit}</p>

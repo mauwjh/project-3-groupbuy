@@ -40,8 +40,8 @@ const ListingEdit = () => {
     setMinQty(data?.listing?.min_quantity)
     setMaxQty(data?.listing?.max_quantity)
     setFile(data?.listing?.img)
-    };
-    fetchData();
+  };
+  fetchData();
   }, [id])
 
   const editListing = async (listingData) => {
@@ -164,8 +164,8 @@ const ListingEdit = () => {
           fullWidth
         />
         <TextField
+        InputLabelProps={{ shrink: true }}
           name="min_quantity"
-          type="number"
           label="Minimum Quantity"
           variant="outlined"
           placeholder="Minimum Quantity"
@@ -176,8 +176,8 @@ const ListingEdit = () => {
           fullWidth
         />
         <TextField
+        InputLabelProps={{ shrink: true }}
           name="max_quantity"
-          type="number"
           label="Maximum Quantity"
           variant="outlined"
           placeholder="Maximum Quantity"
