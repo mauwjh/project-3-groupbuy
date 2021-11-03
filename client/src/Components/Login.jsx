@@ -13,9 +13,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import AuthApi from "../Utility/AuthApi";
-
+import { useHistory } from "react-router-dom";
 
 function Copyright(props) {
+
   return (
     <Typography
       variant="body2"
@@ -38,7 +39,8 @@ const theme = createTheme();
 export default function Login() {
   const authApi = useContext(AuthApi);
  
-  
+  let history = useHistory();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -50,15 +52,16 @@ export default function Login() {
         password: data.get("password"),
       })
       .then((response) => {
-          // console.log("Response Data", response.data);
-          console.log("UserInfo", response.data);
+        // console.log("Response Data", response.data);
+        console.log("UserInfo", response.data);
         if (response.data.auth) {
-            console.log("Am I logged in?", response.data.message, response.data.userInfo._doc);
-            authApi.setAuth({
-              session: response.data.auth,
-              userInfo: response.data.userInfo._doc,
-            });
-          //timedtest() wish to redirect after set time but failed
+          console.log("Am I logged in?", response.data.message, response.data.userInfo._doc);
+          authApi.setAuth({
+            session: response.data.auth,
+            userInfo: response.data.userInfo._doc,
+          });
+          history.push("/");
+         
           }
           else {
           console.log(response.data.message)
@@ -73,7 +76,7 @@ export default function Login() {
 
  
   //function timedtest() {
-    setTimeout("location.href = " / ";", 1500);
+  setTimeout("location.href = " / ";", 1500);
   
   
 
@@ -139,6 +142,7 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
+    
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
