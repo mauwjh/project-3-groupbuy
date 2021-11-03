@@ -18,7 +18,7 @@ mongoose.connection.once('open', () => {
 
 // * Middleware
 app.use(session({
-  secret: "",
+  secret: "feedmeseymour",
   resave: false,
   saveUninitialized: true,
   cookie: {
