@@ -3,6 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
+import { Link as RouterLink } from "react-router-dom";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -10,9 +11,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import axios from "axios";
 import AuthApi from "../Utility/AuthApi";
+
 
 function Copyright(props) {
   return (
@@ -36,7 +37,8 @@ const theme = createTheme();
 
 export default function Login() {
   const authApi = useContext(AuthApi);
-
+ 
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -49,13 +51,18 @@ export default function Login() {
       })
       .then((response) => {
           // console.log("Response Data", response.data);
-          // console.log("UserInfo", response.data);
-          if (response.data.auth) {
-            console.log("Am I logged in?", response.data.auth, response.data.userInfo._doc);
+          console.log("UserInfo", response.data);
+        if (response.data.auth) {
+            console.log("Am I logged in?", response.data.message, response.data.userInfo._doc);
             authApi.setAuth({
               session: response.data.auth,
               userInfo: response.data.userInfo._doc,
             });
+          //timedtest() wish to redirect after set time but failed
+          }
+          else {
+          console.log(response.data.message)
+          alert('You have keyed in an Invalid UserName or PassWord');
           }
         },
         (error) => {
@@ -63,6 +70,12 @@ export default function Login() {
         }
       );
   };
+
+ 
+  //function timedtest() {
+    setTimeout("location.href = " / ";", 1500);
+  
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -85,7 +98,6 @@ export default function Login() {
           <Box
             component="form"
             onSubmit={handleSubmit}
-            noValidate
             sx={{ mt: 1 }}
           >
             <TextField
@@ -108,17 +120,19 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              //onClick= {timedtest}
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="/SignUp" variant="body2">
+                <Link component={RouterLink} to="/SignUp" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
