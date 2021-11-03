@@ -51,12 +51,16 @@ export default function Login() {
           // console.log("Response Data", response.data);
           // console.log("UserInfo", response.data);
           if (response.data.auth) {
-            console.log("Am I logged in?", response.data.auth, response.data.userInfo._doc);
+            console.log("Am I logged in?", response.data.message, response.data.userInfo._doc);
             authApi.setAuth({
               session: response.data.auth,
               userInfo: response.data.userInfo._doc,
             });
           }
+          else {
+            console.log(response.data.message)
+          }
+          window.history.back()
         },
         (error) => {
           console.log("Error", error);

@@ -16,6 +16,9 @@ export default function AccountMenu() {
   };
   const handleClose = () => {
     setAnchorEl(null);  
+    session.setAuth(false)
+    localStorage.clear()
+    window.location.replace("/")
   };
 
   return (
