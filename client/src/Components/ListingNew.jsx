@@ -9,6 +9,9 @@ import { Button } from "@mui/material";
 import sgLocale from "date-fns/locale/en-GB";
 import axios from "axios";
 import AuthApi from "../Utility/AuthApi";
+import Typography from "@mui/material/Typography";
+
+// * TODO Add number of days between start and end date
 
 const ListingNew = () => {
   const [name, setName] = useState("");
@@ -45,13 +48,15 @@ const ListingNew = () => {
     start_date: startDate,
     closing_date: endDate,
     price_per_unit: price,
-    min_quantity: minQty,
+    min_quantity: minQty, 
     max_quantity: maxQty,
     img: '',
     seller_id: session.auth.userInfo._id,
   });
 
   return (
+    <Typography>
+
     <div
       style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}
       onSubmit={(event) => {
@@ -132,6 +137,7 @@ const ListingNew = () => {
             />
           </Stack>
         </LocalizationProvider>
+      
         <TextField
           name="price_per_unit"
           type="number"
@@ -176,6 +182,7 @@ const ListingNew = () => {
         </Button>
       </form>
     </div>
+    </Typography>
   );
 };
 

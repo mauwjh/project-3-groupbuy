@@ -32,7 +32,7 @@ function Copyright() {
 
 const cards = [1, 2, 3, 4, 5, 6];
 
-const theme = createTheme();
+// const theme = createTheme();
 
 export default function Home() {
   const [alllistings,setAllListings] = useState([])
@@ -52,7 +52,7 @@ export default function Home() {
   },[])
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <CssBaseline />
       <main>
         {/* Hero unit */}
@@ -105,7 +105,7 @@ export default function Home() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2" sx={{fontSize: 'clamp(1rem, 2.5vw, 1.2rem)'}}>
+                    <Typography gutterBottom sx={{fontSize: 'clamp(0.8rem, 1.5vw, 1.2rem)', fontWeight: 'bold'}}>
                       {listings.name}
                     </Typography>
                     <Typography sx={{minHeight: 120}}>
@@ -113,23 +113,13 @@ export default function Home() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Link to={`/listing/${listings._id}`}><Button size="small">View</Button></Link>
-                    <Button size="small">Edit</Button>
+                    <Link to={`/listing/${listings._id}`} style={{textDecoration: 'none'}}><Button size="small">View</Button></Link>
                   </CardActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
         </Container>
-        <Stack
-          sx={{ pt: 4 }}
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-        >
-          <Button variant="contained">Main call to action</Button>
-          <Button variant="outlined">Secondary action</Button>
-        </Stack>
       </main>
       {/* Footer */}
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
@@ -147,6 +137,6 @@ export default function Home() {
         <Copyright />
       </Box>
       {/* End footer */}
-    </ThemeProvider>
+      </>
   );
 }
