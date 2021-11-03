@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,6 +10,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import Stack from "@mui/material/Stack";
 
 import axios from "axios";
 import AuthApi from "../Utility/AuthApi";
@@ -36,6 +40,7 @@ const theme = createTheme();
 
 export default function Login() {
   const authApi = useContext(AuthApi);
+  const [warn, setWarn] = useState(0);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,20 +52,27 @@ export default function Login() {
         email: data.get("email"),
         password: data.get("password"),
       })
-      .then((response) => {
-          // console.log("Response Data", response.data);
-          // console.log("UserInfo", response.data);
+      .then(
+        (response) => {
           if (response.data.auth) {
-            console.log("Am I logged in?", response.data.message, response.data.userInfo._doc);
+            console.log(
+              "Am I logged in?",
+              response.data,
+              response.data.message,
+              response.data.userInfo
+            );
             authApi.setAuth({
               session: response.data.auth,
-              userInfo: response.data.userInfo._doc,
+              userInfo: response.data.userInfo,
             });
+            setWarn(true);
+            setTimeout(function () {
+              window.history.back();
+            }, 1300);
+          } else {
+            setWarn(false);
+            console.log(response.data.message);
           }
-          else {
-            console.log(response.data.message)
-          }
-          window.history.back()
         },
         (error) => {
           console.log("Error", error);
@@ -120,6 +132,28 @@ export default function Login() {
             >
               Sign In
             </Button>
+                {warn === 0 ? (
+                  <Alert
+                    variant="outlined"
+                    severity="info"
+                    style={{ display: "none" }}
+                  >
+                    Nothing
+                  </Alert>
+                ) : warn === true ? (
+                  <Alert
+                    variant="outlined"
+                    severity="success"
+                    fullWidth
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Successfully Logged In!
+                  </Alert>
+                ) : (
+                  <Alert variant="outlined" severity="error">
+                    Username or Password is invalid.
+                  </Alert>
+                )}
             <Grid container>
               <Grid item>
                 <Link href="/SignUp" variant="body2">
