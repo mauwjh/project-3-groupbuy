@@ -1,6 +1,8 @@
 import React from "react";
+import Button from "@mui/material/Button";
 import ProgressBar from "./ProgressBar";
 import { Grid } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const GroupbuyDetails = ({ data, orders }) => {
   return (
@@ -61,13 +63,36 @@ const GroupbuyDetails = ({ data, orders }) => {
         </Grid>
         <p>
           {Math?.round(
-            (orders?.map((a) => a?.qty_reserved)?.reduce((a, b) => a + b, 0) /
-              parseInt(data?.max_quantity)) *
-              100
+            orders?.map((a) => a?.qty_reserved)?.reduce((a, b) => a + b, 0)
           )}{" "}
           orders out of a {data.max_quantity} order target
         </p>
-        <p>Closing Date: {data.closing_date.slice(4,15)}</p>
+        <p>
+          Closing Date: {new Date(data.closing_date).toString().slice(4, 15)}
+        </p>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderBottom: "1px solid #CDCDCD",
+          borderRight: "1px solid #CDCDCD",
+          borderLeft: "1px solid #CDCDCD",
+          boxSizing: "border-box",
+        }}
+      >
+        <Button
+          component={Link}
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ margin: "10px" }}
+          to={`/listing/${data._id}/edit`}
+        >
+          Update Listing
+        </Button>
       </div>
     </div>
   );

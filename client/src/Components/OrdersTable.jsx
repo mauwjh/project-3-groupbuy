@@ -16,7 +16,7 @@ export default function OrdersTable({ordersData}) {
   
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 400, width: '100%', marginBottom: '80px' }}>
       <DataGrid
         rows={rows}
         columns={columns}

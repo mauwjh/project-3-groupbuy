@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require('mongoose')
 const router = express.Router();
 const Listing = require("../models/listings");
 const Order = require("../models/orders");
@@ -24,13 +25,27 @@ router.get("/", async (req, res) => {
 //LISTING
 //Listing "listing/:id" ---> Display Specific Listing (No-Login)
 
-router.get("/:id", async (req,res)=>{
-    const { id } = req.params;
-    const listing = await Listing.findById(id);
-    const order = await Order.find({}).populate('buyer_id').populate('listing_id').find({ listing_id: {_id: id }})
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  const order = await Order.find({})
+    .populate("buyer_id")
+    .populate("listing_id")
+    .find({ listing_id: { _id: id } });
 
-    res.json({listing,order})
-})
+  res.json({ listing, order });
+});
+
+router.get("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  const listing = await Listing.find({ seller_id: id });
+  const listingArr = listing.map(a => a._id)
+  const order = await Order.find({})
+    .populate("buyer_id")
+    .populate("listing_id")
+    .find({ listing_id: {$in: listingArr}});
+  res.json({ listing, order });
+});
 
 //Listing "listing/:id" ---> Display Specific Listing for Seller
 //!Seller sees all the orders?
@@ -53,23 +68,28 @@ router.get("/:id", async (req,res)=>{
 // })
 
 //Listing "listing/new" ---> Create New Listing
-//!How do I get the seller_id from listing/new? 
+//!How do I get the seller_id from listing/new?
 
-router.post("/new", async (req,res)=>{
+router.post("/new", async (req, res) => {
+  console.log("body", req.body);
+  const user = await Listing.create({
+    name: req.body.name,
+    description: req.body.description,
+    start_date: req.body.start_date,
+    closing_date: req.body.closing_date,
+    price_per_unit: req.body.price_per_unit,
+    min_quantity: req.body.min_quantity,
+    max_quantity: req.body.max_quantity,
+    img: req.body.img,
+    seller_id: req.body.seller_id,
+  });
+});
+
+router.put("/:id", async (req, res) => {
     console.log("body", req.body);
-        const user = await Listing.create({
-            name: req.body.name,
-            description: req.body.description,
-            start_date: req.body.start_date,
-            closing_date: req.body.closing_date,
-            price_per_unit: req.body.price_per_unit,
-            min_quantity: req.body.min_quantity,
-            max_quantity: req.body.max_quantity,
-            img: req.body.img,
-            seller_id: req.body.seller_id,
-    })
-})
-
+    const listing = await Listing.findByIdAndUpdate(req.params.id, req.body);
+    res.json(listing)
+  });
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -107,7 +127,7 @@ router.post("/new", async (req,res)=>{
 // await prata.save();
 
 // const cookie = new Listing(
-    //     {
+//     {
 //       name: "Choco Coco Cookies",
 //       description:
 //         "Simple triple chocolate cookies that are homebaked. Crispy on the inside and Soft on the outside!",
@@ -126,8 +146,5 @@ router.post("/new", async (req,res)=>{
 //     const listing = await Listing.findby({}).populate('seller_id')
 //     res.send(listing)
 //     })
-
-
-
 
 module.exports = router;
