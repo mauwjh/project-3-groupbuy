@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
-import StorefrontIcon from "@mui/icons-material/Storefront";
+import HomeIcon from "@mui/icons-material/Home";
 import AuthApi from "../Utility/AuthApi";
 
 export default function NaviBar() {
@@ -30,13 +30,8 @@ export default function NaviBar() {
               color="inherit"
               aria-label="menu"
             >
-              <StorefrontIcon />
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ pl: 2, textTransform: "none" }}
-              >
-                Home
+              <Typography>
+              <HomeIcon />
               </Typography>
             </Button>
           </Link>
@@ -46,12 +41,13 @@ export default function NaviBar() {
             component="div"
             sx={{ flex: 1, color: "white", minHeight: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           >
-            Group Buy
+            GROUPBUY
           </Typography>
           {/* <Link sx={{ flexGrow: 1 }} ><Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography></Link> */}
-          <div style={{display: 'flex', flex: 1, justifyContent: 'right'}}>  
+          <Typography style={{display: 'flex', flex: 1, justifyContent: 'right'}}>
+          
           {session.auth.userInfo.usertype === 'seller' ? 
           <Button component={RouterLink} to="/listing/new" color="inherit">
             New
@@ -68,7 +64,8 @@ export default function NaviBar() {
               Logout
             </Button>
           )}
-          </div>
+        
+          </Typography>
         </Toolbar>
       </AppBar>
     </Box>

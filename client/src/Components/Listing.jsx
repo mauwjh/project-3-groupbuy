@@ -7,6 +7,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import OrdersTable from "./OrdersTable";
 import AuthApi from "../Utility/AuthApi";
+import Typography from "@mui/material/Typography";
 
 const Listing = () => {
   const [buyerOrder, setBuyerOrder] = useState([]);
@@ -71,6 +72,8 @@ const Listing = () => {
   );
 
   return (
+    <Typography>
+
     <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}>
       <h1>{data?.listing?.name}</h1>
       <h4>{data?.listing?.description}</h4>
@@ -156,7 +159,7 @@ const Listing = () => {
                 Support this groupbuy
               </Button>
             </Link>
-          ) : session?.auth?.userInfo?.usertype === "buyer" ? (
+          ) : session?.auth?.userInfo?.usertype !== "seller" ? (
             <Link to="/login" style={{ textDecoration: "none", width: '100%' }}>
               <Button
                 type="submit"
@@ -164,7 +167,7 @@ const Listing = () => {
                 size="large"
                 style={{ minWidth: "100%" }}
               >
-                Login to support
+                Support this groupbuy
               </Button>
             </Link>
           ) : null}
@@ -181,6 +184,7 @@ const Listing = () => {
         <h1>Your Order</h1>
       ) : null}
     </div>
+    </Typography>
   );
 };
 

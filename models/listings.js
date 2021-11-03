@@ -9,7 +9,8 @@ const listingSchema = Schema({
     min_quantity: { type: String, min: 1, required: true },
     max_quantity: { type: String, min: 1, required: true },
     img: { type: String, required: true },
-    seller_id : [{ type: Schema.Types.ObjectId, ref: 'User'}],
+    seller_id : [{ type: Schema.Types.ObjectId, ref: 'User'}], 
+// * TODO fix seller_id such that is not an array
     likes: Number
     },
     { timestamps: true }
