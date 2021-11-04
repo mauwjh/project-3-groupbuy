@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
-import { useHistory } from "react-router-dom";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import AuthApi from "../Utility/AuthApi";
@@ -16,6 +15,7 @@ const updateOrder = async (id, obj) => {
   const url = `/api/orders/${id}`;
   const data = await axios.put(url, obj);
   console.log("data", data);
+  window.history.back()
 };
 
 const Order = () => {
@@ -23,7 +23,6 @@ const Order = () => {
   const [orderId, setOrderId] = useState();
   const [data, setData] = useState([]);
   const [qty, setQty] = useState(0);
-  const history = useHistory();
 
   const { id } = useParams();
   console.log("HELLO ID", id);
@@ -153,7 +152,6 @@ const Order = () => {
                   listing_id: id,
                   qty_reserved: qty,
                 });
-                history.push("/");
               }}
             >
               <h2>Summary</h2>
@@ -161,7 +159,7 @@ const Order = () => {
               <p>Price: S${data?.listing?.price_per_unit}</p>
               <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
               <Button type="submit" variant="contained">
-                Checkoutt
+                Checkout
               </Button>
             </form>
           ) : (
@@ -173,7 +171,7 @@ const Order = () => {
                   listing_id: id,
                   qty_reserved: qty,
                 });
-                history.push("/");
+                window.history.back()
               }}
             >
               <h2>Summary</h2>

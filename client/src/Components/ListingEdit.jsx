@@ -1,65 +1,69 @@
 import React, { useEffect, useState, useContext } from "react";
-import {useParams} from 'react-router'
+import { useParams } from "react-router";
 import TextField from "@mui/material/TextField";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import { Stack } from "@mui/material";
-import InputAdornment from '@mui/material/InputAdornment';
+import InputAdornment from "@mui/material/InputAdornment";
 import { Button } from "@mui/material";
-import sgLocale from 'date-fns/locale/en-GB';
+import sgLocale from "date-fns/locale/en-GB";
 import AuthApi from "../Utility/AuthApi";
-import axios from 'axios'
+import axios from "axios";
+import { differenceInDays } from "date-fns";
 
-
-const ListingEdit = () => { 
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
+const ListingEdit = () => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [price, setPrice] = useState()
-  const [minQty, setMinQty] = useState()
-  const [maxQty, setMaxQty] = useState()
+  const [price, setPrice] = useState();
+  const [minQty, setMinQty] = useState();
+  const [maxQty, setMaxQty] = useState();
   const [file, setFile] = useState();
-  const {id} = useParams()
+  const { id } = useParams();
   const session = useContext(AuthApi);
 
   useEffect(() => {
-    const fetchData = async () =>{
-    const URL = `/api/listings/${id}`;
-    const res = await fetch(URL);
-    console.log(res)
-    const data = await res.json();
-    console.log(data)
-    setName(data?.listing?.name)
-    setDescription(data?.listing?.description)
-    setStartDate(data?.listing?.start_date)
-    setEndDate(data?.listing?.closing_date)
-    setPrice(data?.listing?.price_per_unit)
-    setMinQty(data?.listing?.min_quantity)
-    setMaxQty(data?.listing?.max_quantity)
-    setFile(data?.listing?.img)
-  };
-  fetchData();
-  }, [id])
+    const fetchData = async () => {
+      const URL = `/api/listings/${id}`;
+      const res = await fetch(URL);
+      console.log(res);
+      const data = await res.json();
+      console.log(data);
+      setName(data?.listing?.name);
+      setDescription(data?.listing?.description);
+      setStartDate(data?.listing?.start_date);
+      setEndDate(data?.listing?.closing_date);
+      setPrice(data?.listing?.price_per_unit);
+      setMinQty(data?.listing?.min_quantity);
+      setMaxQty(data?.listing?.max_quantity);
+      setFile(data?.listing?.img);
+    };
+    fetchData();
+  }, [id]);
 
   const editListing = async (listingData) => {
-    console.log(listingData)
-    const res = await uploadFile()
-    listingData.img = res
+    console.log(listingData);
+    const res = await uploadFile();
+    listingData.img = res;
     const url = `/api/listings/${id}`;
     const data = await axios.put(url, listingData);
-    console.log(data)
+    console.log(data);
+    window.history.back()
   };
 
   const uploadFile = async () => {
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('upload_preset', process.env.CLOUDINARY_API ?? 'r8r3tzoy')
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", process.env.CLOUDINARY_API ?? "r8r3tzoy");
 
-    const res = await axios.post('https://api.cloudinary.com/v1_1/mauwjh/image/upload', formData)
-    return res.data.secure_url 
-  }
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/mauwjh/image/upload",
+      formData
+    );
+    return res.data.secure_url;
+  };
 
   const setListing = () => ({
     name: name,
@@ -67,17 +71,30 @@ const ListingEdit = () => {
     start_date: startDate,
     closing_date: endDate,
     price_per_unit: price,
-    min_quantity: minQty, 
+    min_quantity: minQty,
     max_quantity: maxQty,
-    img: '',
+    img: "",
     seller_id: session.auth.userInfo._id,
   });
 
+  
+  const timeRemaining = differenceInDays(
+    new Date(endDate),
+    new Date(startDate)
+  );
+
   return (
-    <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }} onSubmit={(event) => {event.preventDefault(); editListing(setListing())}}>
+    <div
+      style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}
+      onSubmit={(event) => {
+        event.preventDefault();
+        editListing(setListing());
+      }}
+    >
       <h1>Create Listing</h1>
       <form>
         <TextField
+          inputProps={{ maxLength: 35 }}
           name="name"
           label="Listing Title"
           variant="outlined"
@@ -88,6 +105,7 @@ const ListingEdit = () => {
           required
           fullWidth
         />
+        <div style={{textAlign: 'right', fontSize: '14px'}}>{name.length} / 35</div>
         <p style={{ fontWeight: "bold", fontSize: "20px" }}>
           Upload a Photo for your Listing
         </p>
@@ -104,27 +122,30 @@ const ListingEdit = () => {
             }}
           />
         </label>
-        <p style={{ fontWeight: "bold", fontSize: "20px" }}>
+        <p style={{ fontWeight: "bold", fontSize: "20px", marginTop: '50px' }}>
           About Your Groupbuy
         </p>
         <TextField
-        InputLabelProps={{ shrink: true, maxLength: 135 }}
+          inputProps={{ maxLength: 135 }}
           name="description"
           label="Description"
           variant="outlined"
-          placeholder="Describe what you are selling and include any details a buyer might be interested to know"
+          placeholder="Concisely describe what you are selling"
           margin="normal"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           required
           fullWidth
           multiline
-          rows={4}
+          rows={2}
         />
+        <div style={{ textAlign: "right", fontSize: "14px" }}>
+          {description.length} / 135
+        </div>
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={sgLocale}>
-          <Stack spacing={3} style={{ marginTop: "15px", marginBottom: "8px"}}>
+          <Stack spacing={3} style={{ marginTop: "15px", marginBottom: "8px" }}>
             <DatePicker
-              name='start_date'
+              name="start_date"
               label="Start Date"
               openTo="day"
               views={["year", "month", "day"]}
@@ -135,7 +156,7 @@ const ListingEdit = () => {
               renderInput={(params) => <TextField {...params} />}
             />
             <DatePicker
-              name='closing_date'
+              name="closing_date"
               disablePast
               label="Closing Date"
               openTo="day"
@@ -148,6 +169,11 @@ const ListingEdit = () => {
             />
           </Stack>
         </LocalizationProvider>
+        <div style={{marginTop: '20px', marginBottom: '10px', marginLeft: '12px'}}>
+
+<div style={{textAlign: 'center', fontSize: '15px', fontWeight: 'bold'}}>Length of Campaign</div>
+<div style={{textAlign: 'center', fontSize: '15px'}}>{timeRemaining} day(s)</div>
+</div>
         <TextField
           name="price_per_unit"
           type="number"
@@ -158,13 +184,13 @@ const ListingEdit = () => {
           value={price}
           onChange={(event) => setPrice(event.target.value)}
           InputProps={{
-            startAdornment:<InputAdornment position="start">$</InputAdornment>
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
           required
           fullWidth
         />
         <TextField
-        InputLabelProps={{ shrink: true }}
+          InputLabelProps={{ shrink: true }}
           name="min_quantity"
           label="Minimum Quantity"
           variant="outlined"
@@ -176,7 +202,7 @@ const ListingEdit = () => {
           fullWidth
         />
         <TextField
-        InputLabelProps={{ shrink: true }}
+          InputLabelProps={{ shrink: true }}
           name="max_quantity"
           label="Maximum Quantity"
           variant="outlined"
@@ -187,7 +213,9 @@ const ListingEdit = () => {
           required
           fullWidth
         />
-        <Button style={{margin: '15px'}} type='submit' variant="contained">Submit</Button>
+        <Button style={{ margin: "15px", marginBottom: '50px' }} type="submit" variant="contained" >
+          Submit
+        </Button>
       </form>
     </div>
   );
