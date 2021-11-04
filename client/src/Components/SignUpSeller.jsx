@@ -133,6 +133,7 @@ export default function SignUpSeller() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                type="email"
                 autoFocus
               />
               <TextField
@@ -183,6 +184,7 @@ export default function SignUpSeller() {
                 id="contact_number"
                 label="Contact Number"
                 name="contact_number"
+                type="number"
                 autoFocus
               />
               <Button

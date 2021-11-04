@@ -124,7 +124,6 @@ export default function SignUpBuyer() {
                 label="Key In Your Name"
                 name="username"
                 autoFocus
-                error
                 helperText="Please complete"
               />
               <TextField
@@ -135,6 +134,7 @@ export default function SignUpBuyer() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                type="email"
                 autoFocus
               />
               <TextField
