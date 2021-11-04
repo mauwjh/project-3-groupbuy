@@ -13,7 +13,20 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Alert from "@mui/material/Alert"
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#3f51b5',
+    },
+  
+    text: {
+      primary: '#6666d8',
+      secondary: '#8c51ec',
+    },
+  }
+});
+
 
 export default function SignUpSeller() {
   let history = useHistory();
