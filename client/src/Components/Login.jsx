@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
+import { Link as RouterLink } from "react-router-dom";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -10,13 +11,11 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import Stack from "@mui/material/Stack";
 
 import axios from "axios";
 import AuthApi from "../Utility/AuthApi";
+import { useHistory } from "react-router-dom";
+import { Modal } from "@material-ui/core";
 
 function Copyright(props) {
   return (
@@ -39,8 +38,33 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  function myFunction() {
+    //document.getElementById("para").style.color = "red";
+    //document.getElementById("para").innerHTML =
+     // "'You have keyed in an Invalid UserName or PassWord'";
+   handleOpen(); // this is for modal
+  }
   const authApi = useContext(AuthApi);
   const [warn, setWarn] = useState(0);
+
+  let history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -54,24 +78,27 @@ export default function Login() {
       })
       .then(
         (response) => {
+
+          // console.log("Response Data", response.data);
+          console.log("UserInfo", response.data);
           if (response.data.auth) {
             console.log(
               "Am I logged in?",
-              response.data,
               response.data.message,
-              response.data.userInfo
+              response.data.userInfo._doc
+
             );
             authApi.setAuth({
               session: response.data.auth,
               userInfo: response.data.userInfo,
             });
-            setWarn(true);
-            setTimeout(function () {
-              window.history.back();
-            }, 1300);
+
+            history.push("/");
           } else {
-            setWarn(false);
             console.log(response.data.message);
+            myFunction();
+            //alert("You have keyed in an Invalid UserName or PassWord");
+
           }
         },
         (error) => {
@@ -98,7 +125,9 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-            <form onSubmit={handleSubmit}>
+
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+
             <TextField
               margin="normal"
               required
@@ -119,6 +148,7 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
+
             <Button
               type="submit"
               fullWidth
@@ -152,11 +182,27 @@ export default function Login() {
                 )}
             <Grid container>
               <Grid item>
-                <Link href="/SignUp" variant="body2">
+                <Link component={RouterLink} to="/SignUp" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
+           {/* <p id="para">Please login</p> */}
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                 I am a Modal
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2, color: "red"  }}>
+                 You have keyed in the wrong email add or password !!!
+                </Typography>
+              </Box>
+            </Modal>
           </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>

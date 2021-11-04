@@ -1,9 +1,8 @@
 import React from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -11,10 +10,15 @@ import SetMeal from "@mui/icons-material/SetMeal";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+
 
 const theme = createTheme();
 
 export default function SignUpBuyer() {
+  let history = useHistory();
+
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,8 +43,8 @@ export default function SignUpBuyer() {
         contact_number: "Nil",
       })
       .then((response) => {
-        console.log("RESPONSE",response);
-        alert(response.data.message)
+        console.log(response);
+        history.push("/login"); //or create listing? 
       });
   };
 
@@ -93,6 +97,15 @@ export default function SignUpBuyer() {
                 </Typography>
               </Box>
             </div>
+
+            <Box
+              component="form"
+              Validate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
+            >
+              <div style={{ width: "100%" }}>
+
                 <Box
                   sx={{
                     display: "flex",
@@ -113,6 +126,8 @@ export default function SignUpBuyer() {
                 label="Key In Your Username"
                 name="username"
                 autoFocus
+                error
+                helperText="Please complete"
               />
               <TextField
                 margin="normal"

@@ -1,9 +1,8 @@
 import React from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -11,10 +10,12 @@ import SetMeal from "@mui/icons-material/SetMeal";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function SignUpSeller() {
+  let history = useHistory();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -34,16 +35,16 @@ export default function SignUpSeller() {
         username: data.get("username"),
         email: data.get("email"),
         password: data.get("password"),
-        payment_details:"Nil",
+        payment_details: "Nil",
         business_name: data.get("business_name"),
         website: data.get("website"),
         contact_number: data.get("contact_number"),
         address: "Nil",
-        name: "Nil"
+        name: "Nil",
       })
       .then((response) => {
-        console.log("RESPONSE",response.data.message);
-        alert(response.data.message)
+        console.log(response);
+        history.push("/login");
       });
   };
 
@@ -98,6 +99,8 @@ export default function SignUpSeller() {
             </div>
 
             <Box
+              component="form"
+              onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
               <div style={{ width: "100%" }}>

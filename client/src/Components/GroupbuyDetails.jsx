@@ -1,11 +1,13 @@
 import React from "react";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import ProgressBar from "./ProgressBar";
 import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
+import Typography from "@mui/material/Typography";
 
 const GroupbuyDetails = ({ data, orders }) => {
   return (
+    <Typography>
     <div>
       <div
         className="image"
@@ -88,13 +90,14 @@ const GroupbuyDetails = ({ data, orders }) => {
           type="submit"
           variant="contained"
           fullWidth
-          sx={{ margin: "10px" }}
+          sx={{margin: "10px"}}
           to={`/listing/${data._id}/edit`}
         >
           Update Listing
         </Button>
       </div>
     </div>
+    </Typography>
   );
 };
 

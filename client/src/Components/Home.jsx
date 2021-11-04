@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -112,7 +112,7 @@ export default function Home() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Link to={`/listing/${listings._id}`} style={{textDecoration: 'none'}}><Button size="small">View</Button></Link>
+                    <Link to={`/listing/${listings._id}`} style={{textDecoration: 'none', margin: '0 auto'}}><Button size="small">View</Button></Link>
                   </CardActions>
                 </Card>
               </Grid>
