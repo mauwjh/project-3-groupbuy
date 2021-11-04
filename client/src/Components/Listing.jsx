@@ -10,6 +10,7 @@ import AuthApi from "../Utility/AuthApi";
 import Typography from "@mui/material/Typography";
 
 const Listing = () => {
+  const [update, setUpdate] = useState(true)
   const [listing, setListing] = useState()
   const [data, setData] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -22,6 +23,7 @@ const Listing = () => {
     const url = `/api/orders/${id}`;
     const deleteOrder = await axios.delete(url);
     console.log(deleteOrder);
+    setUpdate(!update)
     setBuyerOrders([])
   };
 
@@ -59,7 +61,7 @@ const Listing = () => {
       ))
     };
     fetchListing(id);
-  }, [id, session]);
+  }, [id, session, update]);
 
   // const buyers = 0;
   // for (let i=0;i<data.data.order.length;i++) {
@@ -210,6 +212,19 @@ const Listing = () => {
                   Support this groupbuy
                 </Button>
               </Link>
+            )  : session?.auth?.userInfo?.usertype === "buyer" &&
+              buyerOrders?.length > 0 ? (
+              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
+                You have already supported this groupbuy
+              </p>
+            ) : timeRemaining < 0 ? (
+              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
+                This groupbuy has ended
+              </p>
+            ) : percOfGoal >= 100 && timeRemaining >=0 ? (
+              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
+                This groupbuy is no longer accepting orders
+              </p>
             ) : session?.auth?.session === false && timeRemaining >= 0 ? (
               <Link
                 to="/login"
@@ -224,20 +239,7 @@ const Listing = () => {
                   Support this groupbuy
                 </Button>
               </Link>
-            ) : session?.auth?.userInfo?.usertype === "buyer" &&
-              buyerOrders?.length > 0 ? (
-              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
-                You have already supported this groupbuy
-              </p>
-            ) : timeRemaining < 0 ? (
-              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
-                This groupbuy has ended
-              </p>
-            ) : percOfGoal >= 100 && timeRemaining >=0 ? (
-              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
-                This groupbuy is no longer accepting orders
-              </p>
-            ) : null}
+            ) :  null}
           </div>
         </div>
         {session?.auth?.userInfo?.usertype === "seller" &&
