@@ -15,7 +15,7 @@ const updateOrder = async (id, obj) => {
   const url = `/api/orders/${id}`;
   const data = await axios.put(url, obj);
   console.log("data", data);
-  window.history.back()
+  window.history.back();
 };
 
 const Order = () => {
@@ -132,6 +132,52 @@ const Order = () => {
             required
             fullWidth
           />
+          {qty >
+          data?.listing?.max_quantity -
+            data?.order
+              ?.map?.((a) => a.qty_reserved)
+              ?.reduce((a, b) => a + b, 0) +
+            (data?.order?.filter(
+              (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+            )[0]?.qty_reserved
+              ? data?.order?.filter(
+                  (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+                )[0]?.qty_reserved
+              : 0) ? (
+            <div
+              style={{
+                width: "100%",
+                fontSize: "12px",
+                color: "red",
+                textAlign: "left",
+              }}
+            >
+              *The maximum quantity accepted for this order is{" "}
+              {data?.listing?.max_quantity -
+                data?.order
+                  ?.map?.((a) => a.qty_reserved)
+                  ?.reduce((a, b) => a + b, 0) +
+                (data?.order?.filter(
+                  (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+                )[0]?.qty_reserved
+                  ? data?.order?.filter(
+                      (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+                    )[0]?.qty_reserved
+                  : 0)}
+            </div>
+          ) : null}
+          {qty <= 0 ? (
+            <div
+              style={{
+                width: "100%",
+                fontSize: "12px",
+                color: "red",
+                textAlign: "left",
+              }}
+            >
+              *Please input a quantity greater than 0
+            </div>
+          ) : null}
         </div>
         <div
           style={{
@@ -143,7 +189,18 @@ const Order = () => {
             justifyContent: "left",
           }}
         >
-          {orderId ? (
+          {orderId && qty <=
+          data?.listing?.max_quantity -
+            data?.order
+              ?.map?.((a) => a.qty_reserved)
+              ?.reduce((a, b) => a + b, 0) +
+            (data?.order?.filter(
+              (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+            )[0]?.qty_reserved
+              ? data?.order?.filter(
+                  (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+                )[0]?.qty_reserved
+              : 0) && qty > 0 ? (
             <form
               onSubmit={(event) => {
                 event.preventDefault();
@@ -152,6 +209,37 @@ const Order = () => {
                   listing_id: id,
                   qty_reserved: qty,
                 });
+              }}
+            >
+              <h2>Summary</h2>
+              <p>Quantity: {qty}</p>
+              <p>Price: S${data?.listing?.price_per_unit}</p>
+              <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
+              <Button type="submit" variant="contained">
+                Checkout
+              </Button>
+            </form>
+          ) : qty <=
+          data?.listing?.max_quantity -
+            data?.order
+              ?.map?.((a) => a.qty_reserved)
+              ?.reduce((a, b) => a + b, 0) +
+            (data?.order?.filter(
+              (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+            )[0]?.qty_reserved
+              ? data?.order?.filter(
+                  (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+                )[0]?.qty_reserved
+              : 0) && qty > 0 ? (
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                createOrder({
+                  buyer_id: session?.auth?.userInfo?._id,
+                  listing_id: id,
+                  qty_reserved: qty,
+                });
+                window.history.back();
               }}
             >
               <h2>Summary</h2>
@@ -171,16 +259,14 @@ const Order = () => {
                   listing_id: id,
                   qty_reserved: qty,
                 });
-                window.history.back()
+                window.history.back();
               }}
             >
               <h2>Summary</h2>
               <p>Quantity: {qty}</p>
               <p>Price: S${data?.listing?.price_per_unit}</p>
               <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
-              <Button type="submit" variant="contained">
-                Checkout
-              </Button>
+              <Button variant="contained">Checkout</Button>
             </form>
           )}
         </div>
