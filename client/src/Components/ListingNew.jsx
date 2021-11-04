@@ -16,6 +16,7 @@ import { differenceInDays } from "date-fns";
 // * TODO Add number of days between start and end date
 
 const ListingNew = () => {
+  const [disabled, setDisabled] = useState(false)
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(new Date().setHours(0,0,0,0));
@@ -33,6 +34,7 @@ const ListingNew = () => {
     listingData.img = res
     const url = `/api/listings/new`;
     const data = await axios.post(url, listingData);
+    data && history.push('/')
     console.log(data)
   };
 
@@ -70,11 +72,11 @@ const ListingNew = () => {
       onSubmit={(event) => {
         event.preventDefault();
         console.log(name);
-        history.push("/")
       }}
     >
       <h1>Create Listing</h1>
-      <form onSubmit={() => {createNewListing(setListing()); history.push('/');}}>
+      {/* onSubmit={() => {createNewListing(setListing())}} */}
+      <form >
         <TextField
         inputProps={{ maxLength: 35 }}
           name="name"
@@ -194,8 +196,8 @@ const ListingNew = () => {
           required
           fullWidth
         />
-        <Button style={{ margin: "15px", marginBottom: '50px' }} type="submit" variant="contained" >
-          Submit
+        <Button style={{ margin: "15px", marginBottom: '50px' }} type="submit" variant="contained" disabled={disabled} onClick={() => {createNewListing(setListing()); setDisabled(true) } }>
+          {disabled ? 'Sending...' : 'Submit'}
         </Button>
       </form>
     </div>
