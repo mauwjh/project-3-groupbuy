@@ -12,22 +12,12 @@ import Container from "@mui/material/Container";
 import { useEffect, useState, useContext } from "react";
 import {Link} from 'react-router-dom'
 import AuthApi from "../Utility/AuthApi"
+import Footer from "./Footer";
 import ListingNew from "./ListingNew";
+
 
 const URL = "/api/listings";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 // const theme = createTheme();
 
@@ -129,15 +119,8 @@ export default function Home() {
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
+        
+       {/* <Footer/> */}
       </Box>
       {/* End footer */}
       </>
