@@ -108,6 +108,7 @@ const ListingEdit = () => {
           About Your Groupbuy
         </p>
         <TextField
+        InputLabelProps={{ shrink: true, maxLength: 135 }}
           name="description"
           label="Description"
           variant="outlined"

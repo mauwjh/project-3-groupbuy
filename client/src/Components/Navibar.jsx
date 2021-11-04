@@ -44,7 +44,7 @@ export default function NaviBar() {
               color="inherit"
               aria-label="menu"
             >
-              <Typography sx={{display: 'flex', alignItems:'center', justifyContent:'center'}}>
+              <Typography sx={{display: 'flex', alignItems:'center', justifyContent:'center',}}>
                 <HomeIcon />
               </Typography>
             </Button>

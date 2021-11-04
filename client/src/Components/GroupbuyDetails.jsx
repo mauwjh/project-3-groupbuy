@@ -38,8 +38,8 @@ const GroupbuyDetails = ({ data, orders, user }) => {
           minHeight: "150px",
         }}
       >
-        <h4>{data.name}</h4>
-        <h6>{data.description}</h6>
+        <h3>{data.name}</h3>
+        <h5>{data.description}</h5>
       </div>
       <div
         style={{
