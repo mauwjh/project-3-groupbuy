@@ -21,7 +21,7 @@ const ProgressBar = ({data}) => {
   const [value, setValue] = useState(25)
 
   useEffect(() => {
-    setValue(data)
+    data > 100 ? setValue(100) : setValue(data)
   }, [data])
 
   return(
