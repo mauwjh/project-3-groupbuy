@@ -43,8 +43,15 @@ export default function SignUpBuyer() {
         contact_number: "Nil",
       })
       .then((response) => {
-        console.log(response);
-        history.push("/login"); //or create listing? 
+        console.log("RESPONSE",response.data);
+        alert(response.data.message)
+
+        if (response.data.createUser) {
+          history.push("/login") 
+        }
+        else {
+          
+        }
       });
   };
 

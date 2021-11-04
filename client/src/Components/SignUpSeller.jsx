@@ -43,8 +43,14 @@ export default function SignUpSeller() {
         name: "Nil",
       })
       .then((response) => {
-        console.log(response);
-        history.push("/login");
+        console.log("RESPONSE",response);
+        alert(response.data.message)
+        if (response.data.createUser) {
+          history.push("/login") 
+        }
+        else {
+          
+        }
       });
   };
 
