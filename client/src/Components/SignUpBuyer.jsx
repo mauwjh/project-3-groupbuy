@@ -39,7 +39,8 @@ export default function SignUpBuyer() {
         contact_number: "Nil",
       })
       .then((response) => {
-        console.log(response);
+        console.log("RESPONSE",response);
+        alert(response.data.message)
       });
   };
 
@@ -92,13 +93,6 @@ export default function SignUpBuyer() {
                 </Typography>
               </Box>
             </div>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
-              <div style={{ width: "100%" }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -110,13 +104,13 @@ export default function SignUpBuyer() {
                 >
                   <b> Personal Details </b>
                 </Box>
-              </div>
+              <form onSubmit={handleSubmit}>
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="username"
-                label="Key In Your Name"
+                label="Key In Your Username"
                 name="username"
                 autoFocus
               />
@@ -140,7 +134,6 @@ export default function SignUpBuyer() {
                 id="password"
                 autoComplete="current-password"
               />
-              <div style={{ width: "100%" }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -152,7 +145,6 @@ export default function SignUpBuyer() {
                 >
                   <b> Payment Details </b>
                 </Box>
-              </div>
               <TextField
                 margin="normal"
                 id="payment_details"
@@ -171,8 +163,8 @@ export default function SignUpBuyer() {
               >
                 Sign Up
               </Button>
+              </form>
             </Box>
-          </Box>
         </Grid>
       </Grid>
     </ThemeProvider>

@@ -98,12 +98,7 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+            <form onSubmit={handleSubmit}>
             <TextField
               margin="normal"
               required
@@ -132,6 +127,7 @@ export default function Login() {
             >
               Sign In
             </Button>
+            </form>
                 {warn === 0 ? (
                   <Alert
                     variant="outlined"
@@ -162,7 +158,6 @@ export default function Login() {
               </Grid>
             </Grid>
           </Box>
-        </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>

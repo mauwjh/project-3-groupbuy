@@ -42,7 +42,8 @@ export default function SignUpSeller() {
         name: "Nil"
       })
       .then((response) => {
-        console.log(response);
+        console.log("RESPONSE",response.data.message);
+        alert(response.data.message)
       });
   };
 
@@ -97,9 +98,6 @@ export default function SignUpSeller() {
             </div>
 
             <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
               <div style={{ width: "100%" }}>
@@ -115,12 +113,13 @@ export default function SignUpSeller() {
                   <b> Personal Details </b>
                 </Box>
               </div>
+              <form onSubmit={handleSubmit}>
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="username"
-                label="Key In Your Name"
+                label="Key In Your Username"
                 name="username"
                 autoFocus
               />
@@ -144,7 +143,7 @@ export default function SignUpSeller() {
                 id="password"
                 autoComplete="current-password"
               />
-              <div style={{ width: "100%" }}>
+
                 <Box
                   sx={{
                     display: "flex",
@@ -156,7 +155,7 @@ export default function SignUpSeller() {
                 >
                   <b> Business Details </b>
                 </Box>
-              </div>
+
               <TextField
                 margin="normal"
                 required
@@ -182,6 +181,7 @@ export default function SignUpSeller() {
                 id="contact_number"
                 label="Contact Number"
                 name="contact_number"
+                type="number"
                 autoFocus
               />
               <Button
@@ -192,6 +192,7 @@ export default function SignUpSeller() {
               >
                 Sign Up
               </Button>
+              </form>
             </Box>
           </Box>
         </Grid>
