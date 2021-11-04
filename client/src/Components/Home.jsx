@@ -115,7 +115,7 @@ export default function Home() {
           Footer
         </Typography>
         
-       <Footer/>
+       {/* <Footer/> */}
       </Box>
       {/* End footer */}
       </>
