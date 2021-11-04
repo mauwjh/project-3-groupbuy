@@ -85,7 +85,7 @@ router.get("/buyer/:id", async (req, res) => {
 
 router.post("/new", async (req, res) => {
   console.log("body", req.body);
-  const user = await Listing.create({
+  const listing = await Listing.create({
     name: req.body.name,
     description: req.body.description,
     start_date: req.body.start_date,
@@ -96,6 +96,7 @@ router.post("/new", async (req, res) => {
     img: req.body.img,
     seller_id: req.body.seller_id,
   });
+  res.json(listing)
 });
 
 router.put("/:id", async (req, res) => {
