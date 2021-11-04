@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,7 +14,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import AuthApi from "../Utility/AuthApi";
 import { useHistory } from "react-router-dom";
-import { Modal } from "@material-ui/core";
+import Alert from "@mui/material/Alert"
 
 function Copyright(props) {
   return (
@@ -50,16 +50,9 @@ export default function Login() {
     p: 4,
   };
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
-  function myFunction() {
-    //document.getElementById("para").style.color = "red";
-    //document.getElementById("para").innerHTML =
-     // "'You have keyed in an Invalid UserName or PassWord'";
-   handleOpen(); // this is for modal
-  }
+  const [warn, setWarn] = useState(0);
+
   const authApi = useContext(AuthApi);
 
   let history = useHistory();
@@ -88,11 +81,14 @@ export default function Login() {
               session: response.data.auth,
               userInfo: response.data.userInfo,
             });
-            history.push("/");
+            setWarn(true)
+              setTimeout(function () {
+                history.push("/");
+            }, 1300);
+            
           } else {
+            setWarn(false)
             console.log(response.data.message);
-            myFunction();
-            //alert("You have keyed in an Invalid UserName or PassWord");
           }
         },
         (error) => {
@@ -149,6 +145,28 @@ export default function Login() {
             >
               Sign In
             </Button>
+            {warn === 0 ? (
+                  <Alert
+                    variant="outlined"
+                    severity="info"
+                    style={{ display: "none" }}
+                  >
+                    Nothing
+                  </Alert>
+                ) : warn === true ? (
+                  <Alert
+                    variant="outlined"
+                    severity="success"
+                    fullWidth
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Successfully Logged In!
+                  </Alert>
+                ) : (
+                  <Alert variant="outlined" severity="error">
+                    Username or Password is invalid.
+                  </Alert>
+                )}
             <Grid container>
               <Grid item>
                 <Link component={RouterLink} to="/SignUp" variant="body2">
@@ -156,22 +174,6 @@ export default function Login() {
                 </Link>
               </Grid>
             </Grid>
-           {/* <p id="para">Please login</p> */}
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                 I am a Modal
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2, color: "red"  }}>
-                 You have keyed in the wrong email add or password !!!
-                </Typography>
-              </Box>
-            </Modal>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
