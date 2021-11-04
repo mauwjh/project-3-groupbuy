@@ -94,10 +94,6 @@ export default function Login() {
             myFunction();
             //alert("You have keyed in an Invalid UserName or PassWord");
           }
-          else {
-            console.log(response.data.message)
-          }
-          window.history.back()
         },
         (error) => {
           console.log("Error", error);
