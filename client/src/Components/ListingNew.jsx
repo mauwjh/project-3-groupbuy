@@ -10,6 +10,7 @@ import sgLocale from "date-fns/locale/en-GB";
 import axios from "axios";
 import AuthApi from "../Utility/AuthApi";
 import Typography from "@mui/material/Typography";
+import { useHistory } from "react-router";
 
 // * TODO Add number of days between start and end date
 
@@ -23,6 +24,7 @@ const ListingNew = () => {
   const [maxQty, setMaxQty] = useState();
   const [file, setFile] = useState();
   const session = useContext(AuthApi);
+  let history = useHistory()
 
   const createNewListing = async (listingData) => {
     console.log(listingData)
@@ -62,6 +64,7 @@ const ListingNew = () => {
       onSubmit={(event) => {
         event.preventDefault();
         console.log(name);
+        history.push("/")
       }}
     >
       <h1>Create Listing</h1>
