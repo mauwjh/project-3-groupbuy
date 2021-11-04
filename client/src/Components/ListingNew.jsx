@@ -11,14 +11,15 @@ import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import AuthApi from "../Utility/AuthApi";
 import Typography from "@mui/material/Typography";
+import { differenceInDays } from "date-fns";
 
 // * TODO Add number of days between start and end date
 
 const ListingNew = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date().setHours(0,0,0,0));
+  const [endDate, setEndDate] = useState(new Date().setHours(0,0,0,0));
   const [price, setPrice] = useState();
   const [minQty, setMinQty] = useState();
   const [maxQty, setMaxQty] = useState();
@@ -56,6 +57,11 @@ const ListingNew = () => {
     seller_id: session.auth.userInfo._id,
   });
 
+    const timeRemaining = differenceInDays(
+    new Date(endDate),
+    new Date(startDate)
+  );
+
   return (
     <Typography>
 
@@ -70,6 +76,7 @@ const ListingNew = () => {
       <h1>Create Listing</h1>
       <form onSubmit={() => {createNewListing(setListing()); history.push('/');}}>
         <TextField
+        inputProps={{ maxLength: 35 }}
           name="name"
           label="Listing Title"
           variant="outlined"
@@ -80,6 +87,7 @@ const ListingNew = () => {
           required
           fullWidth
         />
+        <div style={{textAlign: 'right', fontSize: '14px'}}>{name.length} / 35</div>
         <p style={{ fontWeight: "bold", fontSize: "20px" }}>
           Upload a Photo for your Listing
         </p>
@@ -96,22 +104,24 @@ const ListingNew = () => {
             }}
           />
         </label>
-        <p style={{ fontWeight: "bold", fontSize: "20px" }}>
+        <p style={{ fontWeight: "bold", fontSize: "20px", marginTop: '50px' }}>
           About Your Groupbuy
         </p>
         <TextField
+          inputProps={{ maxLength: 135 }}
           name="description"
           label="Description"
           variant="outlined"
-          placeholder="Describe what you are selling and include any details a buyer might be interested to know"
+          placeholder="Concisely describe what you are selling"
           margin="normal"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           required
           fullWidth
           multiline
-          rows={4}
+          rows={2}
         />
+        <div style={{textAlign: 'right', fontSize: '14px'}}>{description.length} / 135</div>
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={sgLocale}>
           <Stack spacing={3} style={{ marginTop: "15px", marginBottom: "8px" }}>
             <DatePicker
@@ -140,7 +150,11 @@ const ListingNew = () => {
             />
           </Stack>
         </LocalizationProvider>
-      
+        <div style={{marginTop: '20px', marginBottom: '10px', marginLeft: '12px'}}>
+
+        <div style={{textAlign: 'center', fontSize: '15px', fontWeight: 'bold'}}>Length of Campaign</div>
+        <div style={{textAlign: 'center', fontSize: '15px'}}>{timeRemaining} day(s)</div>
+        </div>
         <TextField
           name="price_per_unit"
           type="number"
@@ -180,7 +194,7 @@ const ListingNew = () => {
           required
           fullWidth
         />
-        <Button style={{ margin: "15px" }} type="submit" variant="contained" >
+        <Button style={{ margin: "15px", marginBottom: '50px' }} type="submit" variant="contained" >
           Submit
         </Button>
       </form>

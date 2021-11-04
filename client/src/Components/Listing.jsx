@@ -10,6 +10,7 @@ import AuthApi from "../Utility/AuthApi";
 import Typography from "@mui/material/Typography";
 
 const Listing = () => {
+  const [listing, setListing] = useState()
   const [data, setData] = useState([]);
   const [orders, setOrders] = useState([]);
   const [numOfOrders, setNumOfOrders] = useState(0);
@@ -34,6 +35,7 @@ const Listing = () => {
       const data = await axios.get(url);
       console.log("DD", data.data);
       console.log("Orders", data.data.order.length);
+      setListing(data.data.listing)
       setData(data.data);
       // <<<<<<< darr-listing
       //       setOrders(data.data.order)
@@ -107,7 +109,7 @@ const Listing = () => {
           >
             <img
               src={data?.listing?.img}
-              style={{ minHeight: "100%", maxHeight: "100%" }}
+              style={{ minHeight: "100%", minWidth: '100%' }}
               alt="transparent"
             />
           </div>
@@ -128,7 +130,7 @@ const Listing = () => {
               </Grid>
             </Grid>
             <p
-              style={{
+              style={{  
                 fontSize: "30px",
                 fontWeight: "bold",
                 marginTop: "15px",
@@ -143,7 +145,7 @@ const Listing = () => {
               style={{
                 fontSize: "30px",
                 fontWeight: "bold",
-                marginTop: "25px",
+                marginTop: "5px",
               }}
             >
               {orders?.length}
@@ -157,11 +159,24 @@ const Listing = () => {
                 buyers have participated in this groupbuy
               </p>
             )}
+
             <p
               style={{
                 fontSize: "30px",
                 fontWeight: "bold",
-                marginTop: "25px",
+                marginTop: "5px",
+              }}
+            >
+              ${listing?.price_per_unit}
+            </p>
+            <p style={{ marginTop: "-35px" }}>
+                per unit
+              </p>
+            <p
+              style={{
+                fontSize: "30px",
+                fontWeight: "bold",
+                marginTop: "5px",
               }}
             >
               {timeRemaining >= 0 ? timeRemaining : 0}
@@ -190,7 +205,7 @@ const Listing = () => {
                   type="submit"
                   variant="contained"
                   size="large"
-                  style={{ minWidth: "100%", marginTop: "-15px" }}
+                  style={{ minWidth: "100%", marginTop: "-35px" }}
                 >
                   Support this groupbuy
                 </Button>
@@ -204,19 +219,23 @@ const Listing = () => {
                   type="submit"
                   variant="contained"
                   size="large"
-                  style={{ minWidth: "100%", marginTop: "-15px" }}
+                  style={{ minWidth: "100%", marginTop: "-35px" }}
                 >
                   Support this groupbuy
                 </Button>
               </Link>
             ) : session?.auth?.userInfo?.usertype === "buyer" &&
               buyerOrders?.length > 0 ? (
-              <p style={{ minWidth: "100%", marginTop: "-15px" }}>
+              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
                 You have already supported this groupbuy
               </p>
             ) : timeRemaining < 0 ? (
-              <p style={{ minWidth: "100%", marginTop: "-15px" }}>
+              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
                 This groupbuy has ended
+              </p>
+            ) : percOfGoal >= 100 && timeRemaining >=0 ? (
+              <p style={{ minWidth: "100%", marginTop: "-35px" }}>
+                This groupbuy is no longer accepting orders
               </p>
             ) : null}
           </div>

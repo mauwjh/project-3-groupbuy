@@ -28,7 +28,7 @@ export default function AccountMenu() {
         onClick={handleClick}
         color="primary"
       >
-        <Typography>
+        <Typography sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <AccountCircleIcon />
         </Typography>
       </Button>

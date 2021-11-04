@@ -105,10 +105,10 @@ export default function Home() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1  }}>
-                    <Typography gutterBottom sx={{fontSize: 'clamp(0.8rem, 1.5vw, 1.2rem)', fontWeight: 'bold'}}>
+                    <Typography gutterBottom sx={{fontSize: 'clamp(0.9rem, 1.5vw, 1rem)', fontWeight: 'bold'}}>
                       {listings.name}
                     </Typography>
-                    <Typography sx={{minHeight: 150, maxHeight: 150, overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                    <Typography sx={{fontSize: 'clamp(0.8rem, 1.5vw, 0.9rem)', minHeight: 150, maxHeight: 150, overflow: 'hidden', textOverflow: 'ellipsis'}}>
                       {listings.description}
                     </Typography>
                   </CardContent>
