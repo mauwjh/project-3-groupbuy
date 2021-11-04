@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,12 +11,15 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import Alert from "@mui/material/Alert"
 
 
 const theme = createTheme();
 
 export default function SignUpBuyer() {
   let history = useHistory();
+  const [warn, setWarn] = useState(0)
+  const [errorMessage, setErrorMessage] = useState()
 
   
   const handleSubmit = (event) => {
@@ -44,13 +47,18 @@ export default function SignUpBuyer() {
       })
       .then((response) => {
         console.log("RESPONSE",response.data);
-        alert(response.data.message)
+        console.log("MESSAGE",response.data.message)
 
         if (response.data.createUser) {
-          history.push("/login") 
+          setWarn(true);
+          setErrorMessage(response.data.message)
+          setTimeout(function () {
+            history.push("/login");
+        }, 1000);
         }
         else {
-          
+          setErrorMessage(response.data.message)
+          setWarn(false)
         }
 
         console.log(response);
@@ -131,8 +139,9 @@ export default function SignUpBuyer() {
                 required
                 fullWidth
                 id="username"
-                label="Key In Your Name"
+                label="Key In Your Username"
                 name="username"
+                inputProps={{ maxLength:30}}
                 autoFocus
                 helperText="Please complete"
               />
@@ -143,6 +152,7 @@ export default function SignUpBuyer() {
                 id="email"
                 label="Email Address"
                 name="email"
+                inputProps={{ maxLength:40}}
                 autoComplete="email"
                 type="email"
                 autoFocus
@@ -152,6 +162,7 @@ export default function SignUpBuyer() {
                 required
                 fullWidth
                 name="password"
+                inputProps={{ maxLength:20}}
                 label="Password"
                 type="password"
                 id="password"
@@ -174,6 +185,7 @@ export default function SignUpBuyer() {
                 margin="normal"
                 id="payment_details"
                 name="payment_details"
+                inputProps={{ maxLength:40}}
                 label="Credit Card Details"
                 InputLabelProps={{
                   shrink: true,
@@ -188,6 +200,28 @@ export default function SignUpBuyer() {
               >
                 Sign Up
               </Button>
+              {warn === 0 ? (
+                  <Alert
+                    variant="outlined"
+                    severity="info"
+                    style={{ display: "none" }}
+                  >
+                    Nothing
+                  </Alert>
+                ) : warn === true ? (
+                  <Alert
+                    variant="outlined"
+                    severity="success"
+                    fullWidth
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    {errorMessage}
+                  </Alert>
+                ) : (
+                  <Alert variant="outlined" severity="error">
+                    {errorMessage}
+                  </Alert>
+                )}
             </Box>
           </Box>
         </Grid>

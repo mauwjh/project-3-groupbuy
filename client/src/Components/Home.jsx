@@ -23,8 +23,13 @@ const URL = "/api/listings";
 
 export default function Home() {
   const [alllistings,setAllListings] = useState([])
+  const [update, setUpdate] = useState(true)
   const value = useContext(AuthApi)
   console.log("value",value)
+
+  const handleUpdate = () => {
+    update ? setUpdate(false) : setUpdate(true)
+  }
   
   useEffect(()=>{
     const fetchData = async () =>{
@@ -36,7 +41,7 @@ export default function Home() {
     setAllListings(data)
     };
     fetchData();
-  },[])
+  },[update])
 
   return (
     <>
@@ -69,10 +74,12 @@ export default function Home() {
               align="center"
               color="text.secondary"
               paragraph
-            >
-              GroupBuy keeps your tummies happy and your bodies healthy! Some 
+            ><Button
+            onClick={handleUpdate}>
+              GroupBuy keeps your tummies happy and your bodies healthy! 
               Take a look at all the photos our members sent to #GroupBuysXXX because
               they are so happy to receive their orders at discounted prices !
+              </Button>
             </Typography>
           </Container>
         </Box>
@@ -117,7 +124,7 @@ export default function Home() {
       {/* Footer */}
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
-          Footer
+          
         </Typography>
         
        {/* <Footer/> */}

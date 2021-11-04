@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,11 +11,16 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import Alert from "@mui/material/Alert"
 
 const theme = createTheme();
 
 export default function SignUpSeller() {
   let history = useHistory();
+  const [warn, setWarn] = useState(0)
+  const [errorMessage, setErrorMessage] = useState()
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,14 +48,23 @@ export default function SignUpSeller() {
         name: "Nil",
       })
       .then((response) => {
-        console.log("RESPONSE",response);
-        alert(response.data.message)
+        console.log("RESPONSE",response.data);
+        console.log("MESSAGE",response.data.message)
+
         if (response.data.createUser) {
-          history.push("/login") 
+          setWarn(true);
+          setErrorMessage(response.data.message)
+          setTimeout(function () {
+            history.push("/login");
+        }, 1000);
         }
         else {
-          
+          setErrorMessage(response.data.message)
+          setWarn(false)
         }
+
+        console.log(response);
+
       });
   };
 
@@ -127,8 +141,9 @@ export default function SignUpSeller() {
                 required
                 fullWidth
                 id="username"
-                label="Key In Your Name"
+                label="Key In Your Username"
                 name="username"
+                inputProps={{ maxLength:30}}
                 autoFocus
               />
               <TextField
@@ -138,6 +153,7 @@ export default function SignUpSeller() {
                 id="email"
                 label="Email Address"
                 name="email"
+                inputProps={{ maxLength:40}}
                 autoComplete="email"
                 type="email"
                 autoFocus
@@ -147,6 +163,7 @@ export default function SignUpSeller() {
                 required
                 fullWidth
                 name="password"
+                inputProps={{ maxLength:20}}
                 label="Password"
                 type="password"
                 id="password"
@@ -172,6 +189,7 @@ export default function SignUpSeller() {
                 id="businessName"
                 label="Business Name"
                 name="business_name"
+                inputProps={{ maxLength:40}}
                 autoFocus
               />
               <TextField
@@ -181,6 +199,7 @@ export default function SignUpSeller() {
                 id="website"
                 label="Business Website"
                 name="website"
+                inputProps={{ maxLength:40}}
                 autoFocus
               />
               <TextField
@@ -190,6 +209,7 @@ export default function SignUpSeller() {
                 id="contact_number"
                 label="Contact Number"
                 name="contact_number"
+                inputProps={{ maxLength:30}}
                 type="number"
                 autoFocus
               />
@@ -201,6 +221,28 @@ export default function SignUpSeller() {
               >
                 Sign Up
               </Button>
+              {warn === 0 ? (
+                  <Alert
+                    variant="outlined"
+                    severity="info"
+                    style={{ display: "none" }}
+                  >
+                    Nothing
+                  </Alert>
+                ) : warn === true ? (
+                  <Alert
+                    variant="outlined"
+                    severity="success"
+                    fullWidth
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    {errorMessage}
+                  </Alert>
+                ) : (
+                  <Alert variant="outlined" severity="error">
+                    {errorMessage}
+                  </Alert>
+                )}
             </Box>
           </Box>
         </Grid>
