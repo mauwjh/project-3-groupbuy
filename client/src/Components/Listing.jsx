@@ -74,8 +74,12 @@ const Listing = () => {
   return (
     <Typography>
       <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}>
-        <h1 style={{marginBottom: 0, marginTop: 60}}>{data?.listing?.name}</h1>
-        <h4 style={{marginBottom: 60, marginTop: 10}}>{data?.listing?.description}</h4>
+        <h1 style={{ marginBottom: 0, marginTop: 60 }}>
+          {data?.listing?.name}
+        </h1>
+        <h4 style={{ marginBottom: 60, marginTop: 10 }}>
+          {data?.listing?.description}
+        </h4>
         <div
           className="details-container"
           style={{ display: "flex", flexFlow: "row wrap" }}
@@ -125,7 +129,13 @@ const Listing = () => {
             <p style={{ marginTop: "-35px" }}>
               reserved out of a target of {data?.listing?.max_quantity} units
             </p>
-            <p style={{ fontSize: "30px", fontWeight: "bold", marginTop: '25px' }}>
+            <p
+              style={{
+                fontSize: "30px",
+                fontWeight: "bold",
+                marginTop: "25px",
+              }}
+            >
               {orders?.length}
             </p>
             {orders?.length === 1 ? (
@@ -137,7 +147,13 @@ const Listing = () => {
                 buyers have participated in this groupbuy
               </p>
             )}
-            <p style={{ fontSize: "30px", fontWeight: "bold", marginTop: '25px' }}>
+            <p
+              style={{
+                fontSize: "30px",
+                fontWeight: "bold",
+                marginTop: "25px",
+              }}
+            >
               {timeRemaining >= 0 ? timeRemaining : 0}
             </p>
             {timeRemaining === 1 ? (
@@ -152,7 +168,7 @@ const Listing = () => {
 
             {session?.auth?.userInfo?.usertype === "buyer" &&
             data?.order?.filter(
-              (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+              (a) => a?.buyer_id[0]?._id === session?.auth?.userInfo?._id
             )?.length === 0 &&
             timeRemaining >= 0 ? (
               <Link
@@ -166,14 +182,12 @@ const Listing = () => {
                   type="submit"
                   variant="contained"
                   size="large"
-                  style={{ minWidth: "100%", marginTop: '-15px' }}
-                  
+                  style={{ minWidth: "100%", marginTop: "-15px" }}
                 >
                   Support this groupbuy
                 </Button>
               </Link>
-            ) : session?.auth?.session === false &&
-            timeRemaining >= 0  ?  (
+            ) : session?.auth?.session === false && timeRemaining >= 0 ? (
               <Link
                 to="/login"
                 style={{ textDecoration: "none", width: "100%" }}
@@ -182,17 +196,23 @@ const Listing = () => {
                   type="submit"
                   variant="contained"
                   size="large"
-                  style={{ minWidth: "100%", marginTop: '-15px' }}
+                  style={{ minWidth: "100%", marginTop: "-15px" }}
                 >
                   Support this groupbuy
                 </Button>
               </Link>
             ) : session?.auth?.userInfo?.usertype === "buyer" &&
               data?.order?.filter(
-                (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+                (a) => a?.buyer_id[0]?._id === session?.auth?.userInfo?._id
               )?.length > 0 ? (
-              <p style={{ minWidth: "100%", marginTop: '-15px' }}>You have already supported this groupbuy</p>
-            ) : timeRemaining < 0 ? <p style={{ minWidth: "100%", marginTop: '-15px' }}>This groupbuy has ended</p> : null}
+              <p style={{ minWidth: "100%", marginTop: "-15px" }}>
+                You have already supported this groupbuy
+              </p>
+            ) : timeRemaining < 0 ? (
+              <p style={{ minWidth: "100%", marginTop: "-15px" }}>
+                This groupbuy has ended
+              </p>
+            ) : null}
           </div>
         </div>
         {session?.auth?.userInfo?.usertype === "seller" &&
@@ -205,6 +225,20 @@ const Listing = () => {
         ) : session?.auth?.userInfo?.usertype === "buyer" &&
           buyerOrder.length > 0 ? (
           <h1>Your Order</h1>
+        ) : null}
+
+        {session?.auth?.userInfo?.usertype === "buyer" &&
+        data?.order?.filter(
+          (a) => a?.buyer_id[0]?._id === session?.auth?.userInfo?._id
+        ).length > 0 ? (
+          <div>
+            <h2>Your Order</h2>
+            <OrdersTable
+              ordersData={data?.order?.filter(
+                (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+              )}
+            />
+          </div>
         ) : null}
       </div>
     </Typography>

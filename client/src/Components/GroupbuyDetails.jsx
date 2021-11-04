@@ -5,7 +5,7 @@ import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 
-const GroupbuyDetails = ({ data, orders }) => {
+const GroupbuyDetails = ({ data, orders, user }) => {
   return (
     <Typography>
     <div>
@@ -85,7 +85,7 @@ const GroupbuyDetails = ({ data, orders }) => {
           boxSizing: "border-box",
         }}
       >
-        <Button
+        {user === 'seller' ?  <Button
           component={Link}
           type="submit"
           variant="contained"
@@ -94,7 +94,8 @@ const GroupbuyDetails = ({ data, orders }) => {
           to={`/listing/${data._id}/edit`}
         >
           Update Listing
-        </Button>
+        </Button> : null}
+       
       </div>
     </div>
     </Typography>

@@ -1,7 +1,7 @@
-import React, {useContext} from 'react';
+import React, { useContext } from "react";
 import { Button } from "@mui/material";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
 import AuthApi from "../Utility/AuthApi";
@@ -15,25 +15,21 @@ export default function AccountMenu() {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    setAnchorEl(null);  
-    session.setAuth(false)
-    localStorage.clear()
-    window.location.replace("/")
+    setAnchorEl(null);
   };
 
   return (
-    
     <div>
       <Button
         id="basic-button"
         aria-controls="basic-menu"
         aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
+        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        color='primary'
+        color="primary"
       >
         <Typography>
-        <AccountCircleIcon/>
+          <AccountCircleIcon />
         </Typography>
       </Button>
       <Menu
@@ -42,13 +38,32 @@ export default function AccountMenu() {
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button',
+          "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem component={RouterLink} to={`/user/${session.auth.userInfo._id}`} color="inherit" onClick={handleClose}>My account</MenuItem><br/>
-        <MenuItem component={RouterLink} to="/logout" color="inherit" onClick={handleClose}>Logout</MenuItem>
+        <MenuItem
+          component={RouterLink}
+          to={`/user/${session.auth.userInfo._id}`}
+          color="inherit"
+          onClick={handleClose}
+        >
+          My account
+        </MenuItem>
+        <br />
+        <MenuItem
+          component={RouterLink}
+          to="/logout"
+          color="inherit"
+          onClick={() => {
+            handleClose();
+            session.setAuth(false);
+            localStorage.clear();
+            window.location.replace("/");
+          }}
+        >
+          Logout
+        </MenuItem>
       </Menu>
     </div>
-
   );
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import {useParams} from 'react-router'
+import {useHistory} from 'react-router-dom'
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import AuthApi from "../Utility/AuthApi";
@@ -15,6 +16,7 @@ const Order = () => {
   const session = useContext(AuthApi);
   const [data, setData] = useState([]);
   const [qty, setQty] = useState(0);
+  const history = useHistory()
 
   const { id } = useParams();
   console.log("HELLO ID", id);  
@@ -114,7 +116,7 @@ const Order = () => {
             justifyContent: "left",
           }}
         >
-          <form onSubmit={(event) => {event.preventDefault(); createOrder({buyer_id: session?.auth?.userInfo?._id, listing_id: id, qty_reserved: qty})}}>
+          <form onSubmit={(event) => {event.preventDefault(); createOrder({buyer_id: session?.auth?.userInfo?._id, listing_id: id, qty_reserved: qty}); history.push('/')}}>
             <h2>Summary</h2>
             <p>Quantity: {qty}</p>
             <p>Price: S${data?.listing?.price_per_unit}</p>
