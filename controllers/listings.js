@@ -1,5 +1,5 @@
 const express = require("express");
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const router = express.Router();
 const Listing = require("../models/listings");
 const Order = require("../models/orders");
@@ -36,14 +36,27 @@ router.get("/:id", async (req, res) => {
   res.json({ listing, order });
 });
 
-router.get("/user/:id", async (req, res) => {
+router.get("/seller/:id", async (req, res) => {
   const { id } = req.params;
   const listing = await Listing.find({ seller_id: id });
   const listingArr = listing.map(a => a._id)
+  console.log(listingArr)
   const order = await Order.find({})
     .populate("buyer_id")
     .populate("listing_id")
     .find({ listing_id: {$in: listingArr}});
+  res.json({ listing, order });
+});
+
+router.get("/buyer/:id", async (req, res) => {
+  const { id } = req.params;
+  const buyerOrder = await Order.find({buyer_id: {$in: id} })
+  const listingArr = buyerOrder.map(a => a.listing_id[0])
+  const listing = await Listing.find({_id: {$in: listingArr}})
+  const order = await Order.find({})
+  .populate("buyer_id")
+  .populate("listing_id")
+  .find({ listing_id: {$in: listingArr}})
   res.json({ listing, order });
 });
 

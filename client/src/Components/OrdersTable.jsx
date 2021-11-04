@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,13 +6,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
-const columns = [
-  { field:'id', hide: true},
-  { field: 'username', headerName: 'Username', minWidth: 200, flex: 1 },
-  { field: 'qty', headerName: 'Quantity Reserved', minWidth: 150, flex: 1 },
-  { field: 'address', headerName: 'Address', minWidth: 400, flex: 3 },
-];
 
 
 export default function OrdersTable({ordersData}) {
