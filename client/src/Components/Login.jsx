@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,6 +11,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import axios from "axios";
 import AuthApi from "../Utility/AuthApi";
 import { useHistory } from "react-router-dom";
@@ -61,6 +62,7 @@ export default function Login() {
    handleOpen(); // this is for modal
   }
   const authApi = useContext(AuthApi);
+  const [warn, setWarn] = useState(0);
 
   let history = useHistory();
 
@@ -76,6 +78,7 @@ export default function Login() {
       })
       .then(
         (response) => {
+
           // console.log("Response Data", response.data);
           console.log("UserInfo", response.data);
           if (response.data.auth) {
@@ -83,21 +86,20 @@ export default function Login() {
               "Am I logged in?",
               response.data.message,
               response.data.userInfo._doc
+
             );
             authApi.setAuth({
               session: response.data.auth,
-              userInfo: response.data.userInfo._doc,
+              userInfo: response.data.userInfo,
             });
+
             history.push("/");
           } else {
             console.log(response.data.message);
             myFunction();
             //alert("You have keyed in an Invalid UserName or PassWord");
+
           }
-          else {
-            console.log(response.data.message)
-          }
-          window.history.back()
         },
         (error) => {
           console.log("Error", error);
@@ -123,7 +125,9 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+
             <TextField
               margin="normal"
               required
@@ -153,6 +157,29 @@ export default function Login() {
             >
               Sign In
             </Button>
+            </form>
+                {warn === 0 ? (
+                  <Alert
+                    variant="outlined"
+                    severity="info"
+                    style={{ display: "none" }}
+                  >
+                    Nothing
+                  </Alert>
+                ) : warn === true ? (
+                  <Alert
+                    variant="outlined"
+                    severity="success"
+                    fullWidth
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Successfully Logged In!
+                  </Alert>
+                ) : (
+                  <Alert variant="outlined" severity="error">
+                    Username or Password is invalid.
+                  </Alert>
+                )}
             <Grid container>
               <Grid item>
                 <Link component={RouterLink} to="/SignUp" variant="body2">
@@ -177,7 +204,6 @@ export default function Login() {
               </Box>
             </Modal>
           </Box>
-        </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>

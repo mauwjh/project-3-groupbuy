@@ -97,6 +97,7 @@ export default function SignUpBuyer() {
                 </Typography>
               </Box>
             </div>
+
             <Box
               component="form"
               Validate
@@ -104,6 +105,7 @@ export default function SignUpBuyer() {
               sx={{ mt: 1 }}
             >
               <div style={{ width: "100%" }}>
+
                 <Box
                   sx={{
                     display: "flex",
@@ -115,13 +117,13 @@ export default function SignUpBuyer() {
                 >
                   <b> Personal Details </b>
                 </Box>
-              </div>
+              <form onSubmit={handleSubmit}>
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="username"
-                label="Key In Your Name"
+                label="Key In Your Username"
                 name="username"
                 autoFocus
                 error
@@ -147,7 +149,6 @@ export default function SignUpBuyer() {
                 id="password"
                 autoComplete="current-password"
               />
-              <div style={{ width: "100%" }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -159,7 +160,6 @@ export default function SignUpBuyer() {
                 >
                   <b> Payment Details </b>
                 </Box>
-              </div>
               <TextField
                 margin="normal"
                 id="payment_details"
@@ -178,8 +178,8 @@ export default function SignUpBuyer() {
               >
                 Sign Up
               </Button>
+              </form>
             </Box>
-          </Box>
         </Grid>
       </Grid>
     </ThemeProvider>
