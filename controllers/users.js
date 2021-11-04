@@ -31,20 +31,32 @@ router.post("/", async (req, res) => {
     });
   }
   if (bcrypt.compareSync(password, user.password)) {
-    const newUser = user._doc;
-    const { password, payment_details, ...rest } = newUser;
-    const userInfo = rest
+    const { password, ...rest } = user;
+    const userInfo = Object.assign({}, { ...rest });
     req.session.user = userInfo;
     res.json({
       message: "Login Successful!",
+      userInfo,
       auth: true,
-      userInfo
     });
   } else {
     res.json({
       message: "Username and Password is invalid.",
     });
   }
+
+  // if (passwordValid) {
+  //     const { password, ...rest } = user;
+  //     const userInfo = Object.assign({}, {...rest});
+  //     req.session.user = userInfo;
+
+  //     res.json({
+  //         message: "Authentication Successful!",
+  //         token,
+  //         userInfo,
+  //         expiresAt
+  //     });
+  // }
 });
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,20 +67,10 @@ router.post("/", async (req, res) => {
 
 router.post("/seller", async (req, res) => {
   console.log("body", req.body);
-  const { email, password, username } = req.body
   req.body.password = bcrypt.hashSync(
-    password,
+    req.body.password,
     bcrypt.genSaltSync(10)
   );
-  console.log("EMAIL",email)
-  const checkUser = await User.findOne({ $or: [ { email }, { username } ] })
-  console.log("CHECKUSER",checkUser)
-  if (checkUser) {
-    return res.json({
-      message: "Username or Email has already taken",
-    });
-  }
-  else {
   const user = await User.create({
     usertype: "seller",
     username: req.body.username,
@@ -81,31 +83,17 @@ router.post("/seller", async (req, res) => {
     website: req.body.website,
     contact_number: req.body.contact_number,
   });
-  res.json({
-    message: "User Account has been created."
-  });
-}
+  res.json(user);
 });
-
 
 //Signup "signup/buyer" ---> Create new user for Buyer
 
 router.post("/buyer", async (req, res) => {
   console.log("body", req.body);
-  const { email, password, username } = req.body
   req.body.password = bcrypt.hashSync(
-    password,
+    req.body.password,
     bcrypt.genSaltSync(10)
   );
-  console.log("EMAIL",email)
-  const checkUser = await User.findOne({ $or: [ { email }, { username } ] })
-  console.log("CHECKUSER",checkUser)
-  if (checkUser) {
-    return res.json({
-      message: "Username or Email has already been taken.",
-    });
-  }
-else {
   const user = await User.create({
     usertype: "buyer",
     username: req.body.username,
@@ -118,10 +106,7 @@ else {
     website: "Nil",
     contact_number: 0,
   });
-  res.json({
-    message: "User Account has been created."
-  });
-}
+  res.json(user);
 });
 
 //!After creating user, redirect him to home page or create new listing?
