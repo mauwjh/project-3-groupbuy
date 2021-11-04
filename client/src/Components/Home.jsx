@@ -6,14 +6,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState, useContext } from "react";
 import {Link} from 'react-router-dom'
 import AuthApi from "../Utility/AuthApi"
+import ListingNew from "./ListingNew";
 
 const URL = "/api/listings";
 
@@ -30,15 +29,13 @@ function Copyright() {
   );
 }
 
-const cards = [1, 2, 3, 4, 5, 6];
-
 // const theme = createTheme();
 
 export default function Home() {
   const [alllistings,setAllListings] = useState([])
   const value = useContext(AuthApi)
   console.log("value",value)
-
+  
   useEffect(()=>{
     const fetchData = async () =>{
     const res = await fetch(URL);
@@ -53,6 +50,10 @@ export default function Home() {
 
   return (
     <>
+    <div style={{display: 'none'}}>
+
+      <ListingNew />
+    </div>
       <CssBaseline />
       <main>
         {/* Hero unit */}
@@ -93,22 +94,24 @@ export default function Home() {
                 <Card
                   sx={{
                     maxWidth: 400,
+                    maxHeight: 600 
                   }}
                 >
                   <CardMedia
                     component="img"
                     sx={{
                       height: 150,
+                      maxHeight: 150
                       
                     }}
                     image={listings.img}
                     alt="random"
                   />
-                  <CardContent sx={{ flexGrow: 1 }}>
+                  <CardContent sx={{ flexGrow: 1  }}>
                     <Typography gutterBottom sx={{fontSize: 'clamp(0.8rem, 1.5vw, 1.2rem)', fontWeight: 'bold'}}>
                       {listings.name}
                     </Typography>
-                    <Typography sx={{minHeight: 120}}>
+                    <Typography sx={{minHeight: 150, maxHeight: 150, overflow: 'hidden', textOverflow: 'ellipsis'}}>
                       {listings.description}
                     </Typography>
                   </CardContent>

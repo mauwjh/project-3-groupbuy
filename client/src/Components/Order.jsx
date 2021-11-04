@@ -1,25 +1,32 @@
 import React, { useState, useEffect, useContext } from "react";
-import {useParams} from 'react-router'
-import {useHistory} from 'react-router-dom'
+import { useParams } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import AuthApi from "../Utility/AuthApi";
 import axios from "axios";
 
 const createOrder = async (obj) => {
-  const url = `/api/orders/new`
-  const data = await axios.post(url, obj)
-  console.log('data', data)
-}
+  const url = `/api/orders/new`;
+  const data = await axios.post(url, obj);
+  console.log("data", data);
+};
+
+const updateOrder = async (id, obj) => {
+  const url = `/api/orders/${id}`;
+  const data = await axios.put(url, obj);
+  console.log("data", data);
+};
 
 const Order = () => {
   const session = useContext(AuthApi);
+  const [orderId, setOrderId] = useState();
   const [data, setData] = useState([]);
   const [qty, setQty] = useState(0);
-  const history = useHistory()
+  const history = useHistory();
 
   const { id } = useParams();
-  console.log("HELLO ID", id);  
+  console.log("HELLO ID", id);
 
   useEffect(() => {
     const fetchListing = async (id) => {
@@ -28,9 +35,27 @@ const Order = () => {
       const data = await axios.get(url);
       console.log("DD", data.data);
       setData(data.data);
+      if (
+        data.data.order.filter(
+          (a) => a.buyer_id[0]._id === session.auth.userInfo._id
+        ).length > 0
+      ) {
+        setQty(
+          data.data.order.filter(
+            (a) => a.buyer_id[0]._id === session.auth.userInfo._id
+          )[0].qty_reserved
+        );
+        setOrderId(
+          data.data.order.filter(
+            (a) => a.buyer_id[0]._id === session.auth.userInfo._id
+          )[0]._id
+        );
+      } else {
+        setQty(0);
+      }
     };
     fetchListing(id);
-  }, [id]);
+  }, [id, session]);
 
   return (
     <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}>
@@ -55,7 +80,7 @@ const Order = () => {
             justifyContent: "left",
           }}
         >
-          <div style={{ width: "100%", display: "flex", flexFlow: "row",}}>
+          <div style={{ width: "100%", display: "flex", flexFlow: "row" }}>
             <div
               className="image"
               style={{
@@ -63,7 +88,7 @@ const Order = () => {
                 maxHeight: "200px",
                 minWidth: "200px",
                 minHeight: "200px",
-                width: '60%',
+                width: "60%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -90,11 +115,14 @@ const Order = () => {
               }}
             >
               <h2 style={{ margin: "0" }}>{data?.listing?.name}</h2>
-              <h3 style={{ marginTop: "10px" }}>{data?.listing?.description}</h3>
+              <h3 style={{ marginTop: "10px" }}>
+                {data?.listing?.description}
+              </h3>
             </div>
           </div>
           <TextField
             name="qty_reserved"
+            InputLabelProps={{ shrink: true }}
             type="number"
             label="Quantity"
             variant="outlined"
@@ -116,13 +144,47 @@ const Order = () => {
             justifyContent: "left",
           }}
         >
-          <form onSubmit={(event) => {event.preventDefault(); createOrder({buyer_id: session?.auth?.userInfo?._id, listing_id: id, qty_reserved: qty}); history.push('/')}}>
-            <h2>Summary</h2>
-            <p>Quantity: {qty}</p>
-            <p>Price: S${data?.listing?.price_per_unit}</p>
-            <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
-          <Button type="submit" variant="contained">Checkout</Button>
-          </form>
+          {orderId ? (
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                updateOrder(orderId, {
+                  buyer_id: session?.auth?.userInfo?._id,
+                  listing_id: id,
+                  qty_reserved: qty,
+                });
+                history.push("/");
+              }}
+            >
+              <h2>Summary</h2>
+              <p>Quantity: {qty}</p>
+              <p>Price: S${data?.listing?.price_per_unit}</p>
+              <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
+              <Button type="submit" variant="contained">
+                Checkoutt
+              </Button>
+            </form>
+          ) : (
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                createOrder({
+                  buyer_id: session?.auth?.userInfo?._id,
+                  listing_id: id,
+                  qty_reserved: qty,
+                });
+                history.push("/");
+              }}
+            >
+              <h2>Summary</h2>
+              <p>Quantity: {qty}</p>
+              <p>Price: S${data?.listing?.price_per_unit}</p>
+              <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
+              <Button type="submit" variant="contained">
+                Checkout
+              </Button>
+            </form>
+          )}
         </div>
       </div>
     </div>
