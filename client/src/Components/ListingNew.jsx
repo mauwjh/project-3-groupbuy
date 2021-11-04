@@ -8,6 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Button } from "@mui/material";
 import sgLocale from "date-fns/locale/en-GB";
 import axios from "axios";
+import {useHistory} from 'react-router-dom'
 import AuthApi from "../Utility/AuthApi";
 import Typography from "@mui/material/Typography";
 import { useHistory } from "react-router";
@@ -23,6 +24,7 @@ const ListingNew = () => {
   const [minQty, setMinQty] = useState();
   const [maxQty, setMaxQty] = useState();
   const [file, setFile] = useState();
+  const history = useHistory()
   const session = useContext(AuthApi);
   let history = useHistory()
 
@@ -68,7 +70,7 @@ const ListingNew = () => {
       }}
     >
       <h1>Create Listing</h1>
-      <form onSubmit={() => createNewListing(setListing())}>
+      <form onSubmit={() => {createNewListing(setListing()); history.push('/');}}>
         <TextField
           name="name"
           label="Listing Title"
@@ -180,7 +182,7 @@ const ListingNew = () => {
           required
           fullWidth
         />
-        <Button style={{ margin: "15px" }} type="submit" variant="contained">
+        <Button style={{ margin: "15px" }} type="submit" variant="contained" >
           Submit
         </Button>
       </form>

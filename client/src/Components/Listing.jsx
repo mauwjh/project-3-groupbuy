@@ -10,12 +10,19 @@ import AuthApi from "../Utility/AuthApi";
 import Typography from "@mui/material/Typography";
 
 const Listing = () => {
-  const [buyerOrder, setBuyerOrder] = useState([]);
   const [data, setData] = useState([]);
   const [orders, setOrders] = useState([]);
   const [numOfOrders, setNumOfOrders] = useState(0);
   const [percOfGoal, setPercOfGoal] = useState(0);
+  const [buyerOrders, setBuyerOrders] = useState()
   const session = useContext(AuthApi);
+
+  const deleteOrder = async (id) => {
+    const url = `/api/orders/${id}`;
+    const deleteOrder = await axios.delete(url);
+    console.log(deleteOrder);
+    setBuyerOrders([])
+  };
 
   const { id } = useParams();
   console.log("HELLO ID", id);
@@ -45,9 +52,12 @@ const Listing = () => {
           parseInt(data.data.listing.max_quantity)) *
           100
       );
+      setBuyerOrders(data.data.order.filter(
+        (a) => a.buyer_id[0]._id === session.auth.userInfo._id
+      ))
     };
     fetchListing(id);
-  }, [id]);
+  }, [id, session]);
 
   // const buyers = 0;
   // for (let i=0;i<data.data.order.length;i++) {
@@ -97,7 +107,7 @@ const Listing = () => {
           >
             <img
               src={data?.listing?.img}
-              style={{ minHeight: "100%", minWidth: "100% " }}
+              style={{ minHeight: "100%", maxHeight: "100%" }}
               alt="transparent"
             />
           </div>
@@ -167,9 +177,7 @@ const Listing = () => {
             )}
 
             {session?.auth?.userInfo?.usertype === "buyer" &&
-            data?.order?.filter(
-              (a) => a?.buyer_id[0]?._id === session?.auth?.userInfo?._id
-            )?.length === 0 &&
+            buyerOrders?.length === 0 &&
             timeRemaining >= 0 ? (
               <Link
                 to={`/order/${id}`}
@@ -202,9 +210,7 @@ const Listing = () => {
                 </Button>
               </Link>
             ) : session?.auth?.userInfo?.usertype === "buyer" &&
-              data?.order?.filter(
-                (a) => a?.buyer_id[0]?._id === session?.auth?.userInfo?._id
-              )?.length > 0 ? (
+              buyerOrders?.length > 0 ? (
               <p style={{ minWidth: "100%", marginTop: "-15px" }}>
                 You have already supported this groupbuy
               </p>
@@ -222,21 +228,41 @@ const Listing = () => {
             <h1>All Orders</h1>
             <OrdersTable ordersData={data?.order} />
           </div>
-        ) : session?.auth?.userInfo?.usertype === "buyer" &&
-          buyerOrder.length > 0 ? (
-          <h1>Your Order</h1>
         ) : null}
 
         {session?.auth?.userInfo?.usertype === "buyer" &&
-        data?.order?.filter(
-          (a) => a?.buyer_id[0]?._id === session?.auth?.userInfo?._id
-        ).length > 0 ? (
+        buyerOrders?.length > 0 ? (
           <div>
             <h2>Your Order</h2>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexFlow: "row-wrap",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Button variant="contained" component={Link} to={`/order/${id}`}>Update</Button>
+              <Button
+                variant="contained"
+                onClick={() =>
+                  deleteOrder(
+                    data?.order?.filter(
+                      (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+                    )[0]._id
+                  )
+                }
+              >
+                Delete
+              </Button>
+            </div>
             <OrdersTable
-              ordersData={data?.order?.filter(
-                (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
-              )}
+              ordersData={[
+                data?.order?.filter(
+                  (a) => a.buyer_id[0]._id === session?.auth?.userInfo?._id
+                )[0],
+              ]}
             />
           </div>
         ) : null}
