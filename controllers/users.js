@@ -62,8 +62,9 @@ router.post("/seller", async (req, res) => {
     bcrypt.genSaltSync(10)
   );
   console.log("EMAIL",email)
+  const lowerEmail = email.toLowerCase()
   const checkUsername = await User.findOne({ username })
-  const checkEmail = await User.findOne({ email })
+  const checkEmail = await User.findOne({ lowerEmail })
   console.log("CHECKUSER",checkUsername)
   if (checkUsername) {
     return res.json({
@@ -107,8 +108,9 @@ router.post("/buyer", async (req, res) => {
     bcrypt.genSaltSync(10)
   );
   console.log("EMAIL",email)
+  const lowerEmail = email.toLowerCase()
   const checkUsername = await User.findOne({ username })
-  const checkEmail = await User.findOne({ email })
+  const checkEmail = await User.findOne({ lowerEmail })
   console.log("CHECKUSER",checkUsername)
   if (checkUsername) {
     return res.json({
