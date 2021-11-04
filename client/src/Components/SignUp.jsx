@@ -9,25 +9,20 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Stack } from "@mui/material";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#3f51b5',
+    },
+  
+    text: {
+      primary: '#6666d8',
+      secondary: '#8c51ec',
+    },
+  }
+});
 
 export default function SignUp() {
   const [userType, setUserType] = React.useState("")
@@ -65,7 +60,7 @@ export default function SignUp() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 20,
               mx: 4,
               display: "flex",
               flexDirection: "column",
@@ -73,9 +68,9 @@ export default function SignUp() {
             }}
           >
             <Typography component="div" variant="h5">
-              Please select if you are a buyer or a seller
+              Please select if you are a <Box sx={{ color: '#DE5045' }}>Buyer</Box>  or a <Box sx={{ color: '#DE5045' }}>Seller</Box>
             </Typography>
-            <Stack spacing={2} sx= {{my:2}}>
+            <Stack spacing={4} sx= {{my:5}}>
               <Button  name = "buyer" onClick={handleClick1} component= { Link} href= "signup/buyer" color="inherit" variant="outlined">
                 Buyer
                 {/* Post usertype : buyer*/}
@@ -85,7 +80,6 @@ export default function SignUp() {
                 {/* Post usertype : seller*/}
           </Button> 
             </Stack>
-            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Grid>
       </Grid>

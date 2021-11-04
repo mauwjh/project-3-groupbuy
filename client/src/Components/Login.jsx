@@ -16,39 +16,26 @@ import AuthApi from "../Utility/AuthApi";
 import { useHistory } from "react-router-dom";
 import Alert from "@mui/material/Alert"
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
-const theme = createTheme();
+
+const theme = createTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#3f51b5',
+    },
+  
+    text: {
+      primary: '#6666d8',
+      secondary: '#8c51ec',
+    },
+  }
+});
+
 
 export default function Login() {
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
+  
 
 
   const [warn, setWarn] = useState(0);
@@ -176,7 +163,6 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
