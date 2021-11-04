@@ -11,6 +11,7 @@ import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import AuthApi from "../Utility/AuthApi";
 import Typography from "@mui/material/Typography";
+import { useHistory } from "react-router";
 
 // * TODO Add number of days between start and end date
 
@@ -25,6 +26,7 @@ const ListingNew = () => {
   const [file, setFile] = useState();
   const history = useHistory()
   const session = useContext(AuthApi);
+  let history = useHistory()
 
   const createNewListing = async (listingData) => {
     console.log(listingData)
@@ -62,8 +64,9 @@ const ListingNew = () => {
     <div
       style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}
       onSubmit={(event) => {
-        event.preventDefault(); 
-        console.log(name);  
+        event.preventDefault();
+        console.log(name);
+        history.push("/")
       }}
     >
       <h1>Create Listing</h1>
