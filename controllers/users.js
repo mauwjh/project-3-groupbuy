@@ -62,12 +62,19 @@ router.post("/seller", async (req, res) => {
     bcrypt.genSaltSync(10)
   );
   console.log("EMAIL",email)
-  const checkUser = await User.findOne({ $or: [ { email }, { username } ] })
-  console.log("CHECKUSER",checkUser)
-  if (checkUser) {
+  const checkUsername = await User.findOne({ username })
+  const checkEmail = await User.findOne({ email })
+  console.log("CHECKUSER",checkUsername)
+  if (checkUsername) {
     return res.json({
       createUser: false,
-      message: "Username or Email has already taken",
+      message: "Username has already been taken.",
+    });
+  }
+  else if (checkEmail) {
+    return res.json({
+      createUser: false,
+      message: "Email has already been taken.",
     });
   }
   else {
@@ -100,12 +107,19 @@ router.post("/buyer", async (req, res) => {
     bcrypt.genSaltSync(10)
   );
   console.log("EMAIL",email)
-  const checkUser = await User.findOne({ $or: [ { email }, { username } ] })
-  console.log("CHECKUSER",checkUser)
-  if (checkUser) {
+  const checkUsername = await User.findOne({ username })
+  const checkEmail = await User.findOne({ email })
+  console.log("CHECKUSER",checkUsername)
+  if (checkUsername) {
     return res.json({
       createUser: false,
-      message: "Username or Email has already been taken.",
+      message: "Username has already been taken.",
+    });
+  }
+  else if (checkEmail) {
+    return res.json({
+      createUser: false,
+      message: "Email has already been taken.",
     });
   }
 else {
