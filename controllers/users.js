@@ -31,33 +31,22 @@ router.post("/", async (req, res) => {
     });
   }
   if (bcrypt.compareSync(password, user.password)) {
-    const { password, ...rest } = user;
-    const userInfo = Object.assign({}, { ...rest });
+    const newUser = user._doc;
+    const { password, payment_details, ...rest } = newUser;
+    const userInfo = rest
     req.session.user = userInfo;
     res.json({
       message: "Login Successful!",
-      userInfo,
       auth: true,
+      userInfo
     });
   } else {
     res.json({
       message: "Username and Password is invalid.",
     });
   }
-
-  // if (passwordValid) {
-  //     const { password, ...rest } = user;
-  //     const userInfo = Object.assign({}, {...rest});
-  //     req.session.user = userInfo;
-
-  //     res.json({
-  //         message: "Authentication Successful!",
-  //         token,
-  //         userInfo,
-  //         expiresAt
-  //     });
-  // }
 });
+
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

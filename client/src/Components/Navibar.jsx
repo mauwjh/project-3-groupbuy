@@ -13,6 +13,12 @@ export default function NaviBar() {
   const session = useContext(AuthApi);
   console.log("session", session);
 
+  const clearCache = () =>{
+    session.setAuth(false)
+    localStorage.clear()
+    window.location.replace("/")
+  }
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
       <AppBar position="static" >
@@ -61,7 +67,7 @@ export default function NaviBar() {
               Login
             </Button>
           ) : (
-            <Button component={RouterLink} to="/logout" color="inherit">
+            <Button component={RouterLink} to="/logout" color="inherit" onClick={clearCache}>
               Logout
             </Button>
           )}

@@ -134,6 +134,7 @@ export default function SignUpBuyer() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                type="email"
                 autoFocus
               />
               <TextField
