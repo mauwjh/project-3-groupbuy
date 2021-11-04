@@ -82,11 +82,11 @@ export default function Login() {
             console.log(
               "Am I logged in?",
               response.data.message,
-              response.data.userInfo._doc
+              response.data.userInfo
             );
             authApi.setAuth({
               session: response.data.auth,
-              userInfo: response.data.userInfo._doc,
+              userInfo: response.data.userInfo,
             });
             history.push("/");
           } else {

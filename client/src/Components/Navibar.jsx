@@ -14,6 +14,12 @@ export default function NaviBar() {
   const session = useContext(AuthApi);
   console.log("session", session);
 
+  const clearCache = () =>{
+    session.setAuth(false)
+    localStorage.clear()
+    window.location.replace("/")
+  }
+
   return (
     <Box
     sx={{
