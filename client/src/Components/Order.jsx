@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import AuthApi from "../Utility/AuthApi";
+import Typography from "@mui/material/Typography";
 import axios from "axios";
 
 const createOrder = async (obj) => {
@@ -57,6 +58,8 @@ const Order = () => {
   }, [id, session]);
 
   return (
+    <Typography>
+
     <div style={{ width: "80%", maxWidth: "1400px", margin: "0 auto" }}>
       <h1>Support this Groupbuy</h1>
       <div
@@ -92,6 +95,7 @@ const Order = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 overflow: "hidden",
+                marginBottom: '18px'
               }}
             >
               <img
@@ -114,9 +118,9 @@ const Order = () => {
               }}
             >
               <h2 style={{ margin: "0" }}>{data?.listing?.name}</h2>
-              <h3 style={{ marginTop: "10px" }}>
+              <p style={{ marginTop: "10px", fontSize: '16px' }}>
                 {data?.listing?.description}
-              </h3>
+              </p>
             </div>
           </div>
           <TextField
@@ -215,7 +219,7 @@ const Order = () => {
               <p>Quantity: {qty}</p>
               <p>Price: S${data?.listing?.price_per_unit}</p>
               <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
-              <Button type="submit" variant="contained">
+              <Button style={{marginTop: '10px'}} type="submit" variant="contained">
                 Checkout
               </Button>
             </form>
@@ -246,7 +250,7 @@ const Order = () => {
               <p>Quantity: {qty}</p>
               <p>Price: S${data?.listing?.price_per_unit}</p>
               <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
-              <Button type="submit" variant="contained">
+              <Button style={{marginTop: '10px'}} type="submit" variant="contained">
                 Checkout
               </Button>
             </form>
@@ -266,12 +270,13 @@ const Order = () => {
               <p>Quantity: {qty}</p>
               <p>Price: S${data?.listing?.price_per_unit}</p>
               <p>Total: S${qty * parseInt(data?.listing?.price_per_unit)}</p>
-              <Button variant="contained">Checkout</Button>
+              <Button style={{marginTop: '10px'}} variant="contained">Checkout</Button>
             </form>
           )}
         </div>
       </div>
     </div>
+    </Typography>
   );
 };
 
