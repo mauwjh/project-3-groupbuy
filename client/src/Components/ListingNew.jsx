@@ -19,8 +19,8 @@ const ListingNew = () => {
   const [disabled, setDisabled] = useState(false)
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(new Date().setHours(0,0,0,0));
-  const [endDate, setEndDate] = useState(new Date().setHours(0,0,0,0));
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [price, setPrice] = useState();
   const [minQty, setMinQty] = useState();
   const [maxQty, setMaxQty] = useState();
@@ -60,8 +60,8 @@ const ListingNew = () => {
   });
 
     const timeRemaining = differenceInDays(
-    new Date(endDate),
-    new Date(startDate)
+    new Date(endDate).setHours(0,0,0,0),
+    new Date(startDate).setHours(0,0,0,0)
   );
 
   return (
