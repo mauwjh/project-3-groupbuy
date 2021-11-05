@@ -81,8 +81,8 @@ const Listing = () => {
   // }, [data, orders]);
 
   const timeRemaining = differenceInDays(
-    new Date(data?.listing?.closing_date),
-    new Date()
+    new Date(data?.listing?.closing_date).setHours(0,0,0,0),
+    new Date().setHours(0,0,0,0)
   );
 
   return (
