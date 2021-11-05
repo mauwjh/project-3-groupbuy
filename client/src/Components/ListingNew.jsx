@@ -60,8 +60,8 @@ const ListingNew = () => {
   });
 
     const timeRemaining = differenceInDays(
-    new Date(endDate),
-    new Date(startDate)
+    new Date(endDate).setHours(0,0,0,0),
+    new Date(startDate).setHours(0,0,0,0)
   );
 
   return (
